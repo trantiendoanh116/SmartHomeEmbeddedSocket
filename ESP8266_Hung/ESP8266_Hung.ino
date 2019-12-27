@@ -18,8 +18,8 @@ extern "C" {
 #include "user_interface.h"
 }
 
-const byte RX = 5;
-const byte TX = 4;
+const byte RX = 5; // chân GPI05 đấu với chân D4 của Arduino
+const byte TX = 4; // chân GPI04 đấu với chân D5 của Arduino
 
 SoftwareSerial mySerial(RX, TX, false, 256);
 SerialCommand sCmd(mySerial); // Khai báo biến sử dụng thư viện Serial Command
@@ -67,9 +67,8 @@ void setup()
 
   //Việc đầu tiên cần làm là kết nối vào mạng Wifi
   Serial.print("Ket noi vao mang ");
-  //Khai báo wifiManager thuộc class WiFiManager, được quy định trong file WiFiManager.h
   WiFiManager wifiManager;
-  //có thểreset các cài đặt cũ bằng cách gọi hàm:
+  //có thể reset các cài đặt cũ bằng cách gọi hàm:
   //wifiManager.resetSettings();
 
   //Cài đặt callback, khi kết nối với wifi cũ thất bại, thiết bị sẽ gọi hàm callback

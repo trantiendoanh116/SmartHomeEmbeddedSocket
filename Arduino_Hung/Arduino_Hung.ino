@@ -16,9 +16,6 @@ const byte TX = 2;  //10        // Chân 2 được dùng làm chân TX
 SoftwareSerial mySerial = SoftwareSerial(RX, TX);
 SerialCommand sCmd(mySerial); // Khai báo biến sử dụng thư viện Serial Command
 
-//const int fanOffPin = 4;
-//const int fanOnPin = 5;
-
 const int speed1Pin = 6;
 const int speed2Pin = 7;
 const int speed3Pin = 8;
