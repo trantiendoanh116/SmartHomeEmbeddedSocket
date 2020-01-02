@@ -30,7 +30,7 @@ void setup() {
 
   mySwitch.enableTransmit(10);
   onClickButtonOffFan();
-  dht.begin(); // Khởi động cảm biến nhiệt
+  //dht.begin(); // Khởi động cảm biến nhiệt
   //Khởi tạo Serial ở baudrate 115200 cho cổng Serial thứ hai, dùng cho việc kết nối với ESP8266
   mySerial.begin(57600);
   pinMode (lightLRPin, INPUT);
@@ -114,15 +114,15 @@ void processControl() {
 
 void nhietdo_bep()
 {
-  float h = dht.readHumidity(); //Đọc độ ẩm
-  float t = dht.readTemperature(); //Đọc nhiệt độ
+ float h = dht.readHumidity(); //Đọc độ ẩm
+ float t = dht.readTemperature(); //Đọc nhiệt độ
 
-  Serial.print("Nhiet do: ");
-  Serial.println(t); //Xuất nhiệt độ
-  Serial.print("Do am: ");
-  Serial.print(h); //Xuất độ ẩm
-  Serial.println("%");
-  delay(100);
+ Serial.print("Nhiet do: ");
+ Serial.println(t); //Xuất nhiệt độ
+ Serial.print("Do am: ");
+ Serial.print(h); //Xuất độ ẩm
+ Serial.println("%");
+ delay(100);
 }
 
 // *****************************************
