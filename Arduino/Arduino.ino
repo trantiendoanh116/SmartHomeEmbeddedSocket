@@ -1,6 +1,7 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 #include <SerialCommand.h>
+#include <RCSwitch.h>
 
 extern "C"
 {
@@ -10,10 +11,14 @@ extern "C"
 SoftwareSerial mySerial = SoftwareSerial(SERIAL_RX, SERIAL_TX);
 SerialCommand sCmd(mySerial);
 
+RCSwitch mySwitch = RCSwitch();
+
 void setup()
 {
   Serial.begin(115200);
   mySerial.begin(57600);
+
+   mySwitch.enableTransmit(10);
 
   pinMode(10, OUTPUT); //TODO
 
@@ -60,6 +65,7 @@ void processControl()
   JsonObject &root = jsonBuffer.parseObject(json);
   if (root.containsKey(ID_DEN_TRAN_KH1))
   {
+    //changeLight();
     changeDenTranKh1();
   }
   if (root.containsKey("init"))
@@ -81,12 +87,41 @@ void sendData(JsonObject &data)
   data.printTo(Serial);
   Serial.print('\n');
 }
+/*----------------Test in Trường's device--------------*/
+void changeLight()
+{
+  Serial.println("Change DenTranKH1");
+  int lightStatus = digitalRead(11);
+  digitalWrite(10, !lightStatus);
+  sendStatusLight();
+}
+void sendStatusLight()
+{
+  int value = readStatusLight();
+  StaticJsonBuffer<200> jsonBuffer;
+  JsonObject &root = jsonBuffer.createObject();
+  if (value == 1 || value == 0)
+  {
+    root[ID_DEN_TRAN_KH1] = value;
+  }
+  else
+  {
+    root[ID_DEN_TRAN_KH1] = -1;
+  }
+  sendData(root);
+}
+
+int readStatusLight()
+{
+  return digitalRead(11);
+}
 /*----------------DenTranKH1--------------*/
 void changeDenTranKh1()
 {
   Serial.println("Change DenTranKH1");
-  int lightStatus = digitalRead(PIN_DEN_TRAN_KH1);
-  digitalWrite(10, !lightStatus);
+  mySwitch.send((ADD_CN8 << 8) | VALUE_DEN_TRAN_KH1, 24);
+  delay(100);
+  mySwitch.send((ADD_CN8 << 8) | 0b00000000, 24);
   sendStatusDenTranKh1();
 }
 void sendStatusDenTranKh1()
