@@ -5,7 +5,7 @@
 
 extern "C"
 {
-#include "Config.h"
+#include "Config1.h"
 }
 
 SoftwareSerial mySerial = SoftwareSerial(SERIAL_RX, SERIAL_TX);
@@ -90,7 +90,6 @@ void sendData(JsonObject &data)
 /*----------------Test in Trường's device--------------*/
 void changeLight()
 {
-  Serial.println("Change DenTranKH1");
   int lightStatus = digitalRead(11);
   digitalWrite(10, !lightStatus);
   sendStatusLight();
@@ -102,11 +101,11 @@ void sendStatusLight()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_DEN_TRAN_KH1] = value;
+    root[ID_DEN_CHUM_KH1] = value;
   }
   else
   {
-    root[ID_DEN_TRAN_KH1] = -1;
+    root[ID_DEN_CHUM_KH1] = -1;
   }
   sendData(root);
 }
