@@ -18,13 +18,13 @@ const int DHTTYPE = DHT22;
 DHT dht(PIN_TEMP_HUMI, DHTTYPE);
 void setup()
 {
-  Serial.begin(115200);
-  mySerial.begin(57600);
+  Serial.begin(57600);
+  mySerial.begin(115200);
 
   mySwitch.enableTransmit(10);
 
   dht.begin();
-
+  //offQuat();
   // pinMode(10, OUTPUT); //test trên thiết bị của Trường
   // pinMode(11, INPUT);
 
@@ -264,7 +264,7 @@ void sendStatusDenTranKh1()
 
 int readStatusDenTranKh1()
 {
-  return digitalRead(PIN_DEN_TRAN_KH1);
+  return !digitalRead(PIN_DEN_TRAN_KH1);
 }
 /*----------------DenChumKH1--------------*/
 void changeDenChumKh1()
@@ -293,7 +293,7 @@ void sendStatusDenChumKh1()
 
 int readStatusDenChumKh1()
 {
-  return digitalRead(PIN_DEN_CHUM_KH1);
+  return !digitalRead(PIN_DEN_CHUM_KH1);
 }
 /*----------------DenTranhKH1--------------*/
 void changeDenTranhKh1()
@@ -309,9 +309,13 @@ void sendStatusDenTranhKh1()
   int value = readStatusDenTranhKh1();
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
+  if (value == 1)
   {
-    root[ID_DEN_TRANH_KH1] = value;
+    root[ID_DEN_TRANH_KH1] = 0;
+  }
+  else if (value == 0)
+  {
+    root[ID_DEN_TRANH_KH1] = 1;
   }
   else
   {
@@ -327,7 +331,6 @@ int readStatusDenTranhKh1()
 /*----------------QuatTran--------------*/
 void changeQuatTran(JsonObject &root)
 {
-  Serial.println("Change QuatTran");
   if (root[ID_QUAT_TRAN] == "on")
   {
     onQuat();
@@ -339,14 +342,16 @@ void changeQuatTran(JsonObject &root)
 }
 void onQuat()
 {
-  mySwitch.send((ADD_CN7 << 8) | 0b00001100, 24);
+  Serial.println("Change ON QuatTran");
+  mySwitch.send((ADD_CN7 << 8) | 0b00000011, 24);
   delay(80);
   mySwitch.send((ADD_CN7 << 8) | 0b00000000, 24);
   sendStatusQuat();
 }
 void offQuat()
 {
-  mySwitch.send((ADD_CN7 << 8) | 0b00000011, 24);
+  Serial.println("Change OFF QuatTran");
+  mySwitch.send((ADD_CN7 << 8) | 0b00001100, 24);
   delay(80);
   mySwitch.send((ADD_CN7 << 8) | 0b00000000, 24);
   sendStatusQuat();
@@ -370,23 +375,19 @@ void sendStatusQuat()
 int readStatusQuat()
 {
   int speed1Status = !digitalRead(PIN_QUAT_TRAN_1);
-  int speed2Status = !digitalRead(PIN_QUAT_TRAN_1);
-  int speed3Status = !digitalRead(PIN_QUAT_TRAN_1);
-  if (speed1Status == 0 and speed2Status == 0 and speed3Status == 0)
-  {
-    return 0;
-  }
-  if (speed1Status == 1)
-  {
+  int speed2Status = !digitalRead(PIN_QUAT_TRAN_2);
+  int speed3Status = !digitalRead(PIN_QUAT_TRAN_3);
+  Serial.println(speed1Status);
+  Serial.println(speed2Status);
+  Serial.println(speed3Status);
+   if(speed1Status == 1){
     return 3;
-  }
-  if (speed2Status == 1)
-  {
+  }else if (speed2Status == 1){
     return 2;
-  }
-  if (speed3Status == 1)
-  {
+  }else if (speed3Status == 1){
     return 1;
+  }else{
+    return 0;
   }
 }
 /*----------------DenTrangTriKH1--------------*/

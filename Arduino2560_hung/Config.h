@@ -1,4 +1,4 @@
-const byte SERIAL_RX = 5;
+const byte SERIAL_RX = 50; //5
 const byte SERIAL_TX = 4;
 /*--------Giá trị của các Address CN -------*/
 const long ADD_CN1 = 0b0101010101010100;
@@ -15,8 +15,8 @@ const long ADD_CN11 = 0b0101010100000101;
 const long ADD_CN12 = 0b0101010000010101;
 /*--------Giá trị bit của các nút điều khiển(19)------*/
 const int VALUE_DEN_TRAN_KH1 = 0b00000011;
-const int VALUE_DEN_CHUM_KH1 = 0b00001100;
-const int VALUE_DEN_TRANH_KH1 = 0b00110000;
+const int VALUE_DEN_CHUM_KH1 = 0b00110000;
+const int VALUE_DEN_TRANH_KH1 = 0b00001100;
 const int VALUE_QUAT_TRAN_OFF = 0b00001100;
 const int VALUE_QUAT_TRAN_ON = 0b00110000;
 const int VALUE_DEN_TRANGTRI_KH1 = 0b00000011;
@@ -34,9 +34,9 @@ const int VALUE_KHI_LOC = 0b00000011;//????
 const int VALUE_AT_BEP = 0b00000011;
 const int VALUE_AT_TONG = 0b00000011;
 /*--------Giá trị Pin để lấy giá trị/trang thái -------*/
-const int PIN_DEN_TRAN_KH1 = 44;
-const int PIN_DEN_CHUM_KH1 = 45;
-const int PIN_DEN_TRANH_KH1 = 46;
+const int PIN_DEN_TRAN_KH1 = 46;
+const int PIN_DEN_CHUM_KH1 = 44;
+const int PIN_DEN_TRANH_KH1 = 45;
 const int PIN_QUAT_TRAN_1 = 32;
 const int PIN_QUAT_TRAN_2 = 33;
 const int PIN_QUAT_TRAN_3 = 34;
@@ -83,4 +83,4 @@ const String ID_TEMP_HUMI = "C_S01";
 const String ID_KHOI_CO = "C_S02";
 const String ID_DONGDIEN_VA_CONGSUAT = "C_S03";
 /*------Thông số cài đặt ------*/
-const unsigned long SCHEDULE_GET_VALUE_SENSOR = 10000UL; //Cứ sau 30s thì chu kỳ lặp lại
+const unsigned long SCHEDULE_GET_VALUE_SENSOR = 30000UL; //Cứ sau 30s thì chu kỳ lặp lại
