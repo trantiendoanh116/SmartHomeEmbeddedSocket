@@ -27,7 +27,8 @@ SerialCommand sCmd(mySerial); // Khai báo biến sử dụng thư viện Serial
 
 //Cài đặt Socket client
 SocketIOClient client;
-char host[] = "smarthome116.herokuapp.com"; //Địa chỉ IP dịch vụ, hãy thay đổi nó theo địa chỉ IP Socket server của bạn.
+char host[] = "smart-home-hung.herokuapp.com"; //Địa chỉ IP dịch vụ, hãy thay đổi nó theo địa chỉ IP Socket server của bạn.
+//smarthome116.herokuapp.com
 int port = 80;                        //80,3484                  //Cổng dịch vụ socket server do chúng ta tạo!
 char namespace_esp8266[] = "esp8266"; //Thêm Arduino!
 
@@ -69,7 +70,7 @@ void setup()
   Serial.print("Ket noi vao mang ");
   WiFiManager wifiManager;
   //có thể reset các cài đặt cũ bằng cách gọi hàm:
-  //wifiManager.resetSettings();
+  wifiManager.resetSettings();
 
   //Cài đặt callback, khi kết nối với wifi cũ thất bại, thiết bị sẽ gọi hàm callback
   //và khởi động chế độ AP với SSID được cài tự động là "ESP+chipID"
