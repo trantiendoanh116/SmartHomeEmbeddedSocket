@@ -62,15 +62,15 @@ void sendSocketServer(String command)
 // Cài đặt thông số ban đầu
 void setup()
 {
-  Serial.begin(57600);
-  mySerial.begin(115200); //Bật software serial để giao tiếp với Arduino, nhớ để baudrate trùng với software serial trên mạch arduino
+  Serial.begin(115200);
+  mySerial.begin(57600); //Bật software serial để giao tiếp với Arduino, nhớ để baudrate trùng với software serial trên mạch arduino
   delay(10);
 
   //Việc đầu tiên cần làm là kết nối vào mạng Wifi
   Serial.print("Ket noi vao mang ");
   WiFiManager wifiManager;
   //có thể reset các cài đặt cũ bằng cách gọi hàm:
-  wifiManager.resetSettings();
+  //wifiManager.resetSettings();
 
   //Cài đặt callback, khi kết nối với wifi cũ thất bại, thiết bị sẽ gọi hàm callback
   //và khởi động chế độ AP với SSID được cài tự động là "ESP+chipID"

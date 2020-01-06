@@ -18,8 +18,8 @@ const int DHTTYPE = DHT22;
 DHT dht(PIN_TEMP_HUMI, DHTTYPE);
 void setup()
 {
-  Serial.begin(57600);
-  mySerial.begin(115200);
+  Serial.begin(115200);
+  mySerial.begin(57600);
 
   mySwitch.enableTransmit(10);
 
@@ -214,10 +214,10 @@ void sendStatusLight()
 /*----------------Đo nhiệt độ, đổ ẩm và khí CO------------*/
 void sendValueTempHumi()
 {
-  float h = dht.readHumidity();
-  float t = dht.readTemperature();
-  //float h = random(60,80);
-  //float t = random(20,40);
+  // float h = dht.readHumidity();
+  // float t = dht.readTemperature();
+  float h = random(60,80);
+  float t = random(25,35);
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   root["TEMP"] = t;
@@ -253,7 +253,7 @@ void sendStatusDenTranKh1()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_DEN_TRAN_KH1] = value;
+    root[ID_DEN_TRAN_KH1] = !value;
   }
   else
   {
@@ -264,7 +264,7 @@ void sendStatusDenTranKh1()
 
 int readStatusDenTranKh1()
 {
-  return !digitalRead(PIN_DEN_TRAN_KH1);
+  return digitalRead(PIN_DEN_TRAN_KH1);
 }
 /*----------------DenChumKH1--------------*/
 void changeDenChumKh1()
@@ -282,7 +282,7 @@ void sendStatusDenChumKh1()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_DEN_CHUM_KH1] = value;
+    root[ID_DEN_CHUM_KH1] = !value;
   }
   else
   {
@@ -293,7 +293,8 @@ void sendStatusDenChumKh1()
 
 int readStatusDenChumKh1()
 {
-  return !digitalRead(PIN_DEN_CHUM_KH1);
+  Serial.println(digitalRead(PIN_DEN_CHUM_KH1));
+  return digitalRead(PIN_DEN_CHUM_KH1);
 }
 /*----------------DenTranhKH1--------------*/
 void changeDenTranhKh1()
@@ -309,13 +310,8 @@ void sendStatusDenTranhKh1()
   int value = readStatusDenTranhKh1();
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1)
-  {
-    root[ID_DEN_TRANH_KH1] = 0;
-  }
-  else if (value == 0)
-  {
-    root[ID_DEN_TRANH_KH1] = 1;
+  if (value == 1 || value == 0){
+     root[ID_DEN_TRANH_KH1] = !value;
   }
   else
   {
@@ -374,19 +370,26 @@ void sendStatusQuat()
 
 int readStatusQuat()
 {
-  int speed1Status = !digitalRead(PIN_QUAT_TRAN_1);
-  int speed2Status = !digitalRead(PIN_QUAT_TRAN_2);
-  int speed3Status = !digitalRead(PIN_QUAT_TRAN_3);
-  Serial.println(speed1Status);
-  Serial.println(speed2Status);
-  Serial.println(speed3Status);
-   if(speed1Status == 1){
+  int speed1Status = digitalRead(PIN_QUAT_TRAN_1);
+  int speed2Status = digitalRead(PIN_QUAT_TRAN_2);
+  int speed3Status = digitalRead(PIN_QUAT_TRAN_3);
+  Serial.println(digitalRead(PIN_QUAT_TRAN_1));
+  Serial.println(digitalRead(PIN_QUAT_TRAN_2));
+  Serial.println(digitalRead(PIN_QUAT_TRAN_3));
+  if (speed1Status == 0)
+  {
     return 3;
-  }else if (speed2Status == 1){
+  }
+  else if (speed2Status == 0)
+  {
     return 2;
-  }else if (speed3Status == 1){
+  }
+  else if (speed3Status == 0)
+  {
     return 1;
-  }else{
+  }
+  else
+  {
     return 0;
   }
 }
@@ -406,7 +409,7 @@ void sendStatusDenTrangTriKh1()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_DEN_TRANGTRI_KH1] = value;
+    root[ID_DEN_TRANGTRI_KH1] = !value;
   }
   else
   {
@@ -435,7 +438,7 @@ void sendStatusDenTranKh2()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_DEN_TRAN_KH2] = value;
+    root[ID_DEN_TRAN_KH2] = !value;
   }
   else
   {
@@ -464,7 +467,7 @@ void sendStatusDenChumKh2()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_DEN_CHUM_KH2] = value;
+    root[ID_DEN_CHUM_KH2] = !value;
   }
   else
   {
@@ -493,7 +496,7 @@ void sendStatusDenTranhKh2()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_DEN_TRANH_KH2] = value;
+    root[ID_DEN_TRANH_KH2] = !value;
   }
   else
   {
@@ -522,7 +525,7 @@ void sendStatusDenSan()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_DEN_SAN] = value;
+    root[ID_DEN_SAN] = !value;
   }
   else
   {
@@ -551,7 +554,7 @@ void sendStatusDenCong()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_DEN_CONG] = value;
+    root[ID_DEN_CONG] = !value;
   }
   else
   {
@@ -580,7 +583,7 @@ void sendStatusDenWC()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_DEN_WC] = value;
+    root[ID_DEN_WC] = !value;
   }
   else
   {
@@ -610,7 +613,7 @@ void sendStatusBinhNL()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_BINH_NL] = value;
+    root[ID_BINH_NL] = !value;
   }
   else
   {
@@ -639,7 +642,7 @@ void sendStatusDenCuaNgach()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_DEN_CUA_NGACH] = value;
+    root[ID_DEN_CUA_NGACH] = !value;
   }
   else
   {
@@ -668,7 +671,7 @@ void sendStatusDenBep1()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_BEP_1] = value;
+    root[ID_BEP_1] = !value;
   }
   else
   {
@@ -679,6 +682,7 @@ void sendStatusDenBep1()
 
 int readStatusBep1()
 {
+  Serial.println(digitalRead(PIN_DEN_BEP_1));
   return digitalRead(PIN_DEN_BEP_1);
 }
 /*----------------Den Bep2--------------*/
@@ -697,7 +701,7 @@ void sendStatusDenBep2()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_BEP_2] = value;
+    root[ID_BEP_2] = !value;
   }
   else
   {
@@ -727,7 +731,7 @@ void sendStatusKhiLoc()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_KHI_LOC] = value;
+    root[ID_KHI_LOC] = !value;
   }
   else
   {
@@ -771,7 +775,7 @@ void sendStatusATBep()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_AT_BEP] = value;
+    root[ID_AT_BEP] = !value;
   }
   else
   {
@@ -800,7 +804,7 @@ void sendStatusATTong()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
   {
-    root[ID_AT_TONG] = value;
+    root[ID_AT_TONG] = !value;
   }
   else
   {

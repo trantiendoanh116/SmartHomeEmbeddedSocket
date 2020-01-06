@@ -27,12 +27,12 @@ const int VALUE_DEN_SAN = 0b00001100;
 const int VALUE_DEN_CONG = 0b00110000;
 const int VALUE_DEN_WC = 0b00000011;
 const int VALUE_BINH_NL = 0b00001100;
-const int VALUE_DEN_CUA_NGACH = 0b00000011;
-const int VALUE_BEP_1 = 0b00000011;
+const int VALUE_DEN_CUA_NGACH = 0b00110000;
+const int VALUE_BEP_1 = 0b00110000;
 const int VALUE_BEP_2 = 0b00000011;
 const int VALUE_KHI_LOC = 0b00000011;//????
-const int VALUE_AT_BEP = 0b00000011;
-const int VALUE_AT_TONG = 0b00000011;
+const int VALUE_AT_BEP = 0b00110000;
+const int VALUE_AT_TONG = 0b00110000;
 /*--------Giá trị Pin để lấy giá trị/trang thái -------*/
 const int PIN_DEN_TRAN_KH1 = 46;
 const int PIN_DEN_CHUM_KH1 = 44;
