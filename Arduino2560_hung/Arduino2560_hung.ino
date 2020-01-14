@@ -56,9 +56,40 @@ void setup()
   sCmd.addCommand("CONTROL", processControl);
 }
 unsigned long lastUpdatedSensor = 0;
+unsigned long lastUpdatedDevice = 0;
+
+bool isFirstLoop = true;
+int vDenTranKh1, vDenChumKh1, vDenTranhKh1, vQuat, vDenTrangTriKh1, vDenTranKh2, vDenChumKh2, vDenTranhKh2, vDenSan, vDenCong,
+    vDenWC, vBinhNL, vDenCuaNgach, vDenBep1, vDenBep2, vKhiLoc, vATBep, vATTong;
 
 void loop()
 {
+  if(isFirstLoop){
+     Serial.println("First loop after upload code -> update var golobal");
+     isFirstLoop = false;
+     vDenTranKh1 = readStatusDenTranKh1();
+     vDenChumKh1 = readStatusDenChumKh1();
+     vDenTranhKh1 = readStatusDenTranhKh1();
+     vQuat = readStatusQuat();
+     vDenTrangTriKh1 = readStatusDenTrangTriKh1();
+     vDenTranKh2 = readStatusDenTranKh2();
+     vDenChumKh2 = readStatusDenChumKh2();
+     vDenTranhKh2 = readStatusDenTranhKh2();
+     vDenSan = readStatusDenSan();
+     vDenCong = readStatusDenCong();
+     vDenWC = readStatusDenWC();
+     vBinhNL = readStatusBinhNL();
+     vDenCuaNgach = readStatusCuaNgach();
+     vDenBep1 = readStatusBep1();
+     vDenBep2 = readStatusBep2();
+     vKhiLoc = readStatusKhiLoc();
+     vATBep = readStatusATBep();
+     vATTong = readStatusATTong();
+  }
+   //Chu trình kiểm tra có thiết bị thay đổi trạng thái
+  if(millis() - lastUpdatedDevice > SCHEDULE_GET_VALUE_DEVICE){
+    checkAndUpdateValueDevice();
+  }
   //Chu trình cập nhật dữ liệu của các cảm biến
   if (millis() - lastUpdatedSensor > SCHEDULE_GET_VALUE_SENSOR)
   {
@@ -175,6 +206,81 @@ void processControl()
     sendValueCOBep();
   }
 }
+
+void checkAndUpdateValueDevice(){
+  if(vDenTranKh1 != readStatusDenTranKh1()){
+    sendStatusDenTranKh1();
+  }
+  delay(20);
+  if(vDenChumKh1 != readStatusDenChumKh1()){
+    sendStatusDenChumKh1();
+  }
+  delay(20);
+  if(vDenTranhKh1 != readStatusDenTranhKh1()){
+    sendStatusDenTranhKh1();
+  }
+  delay(20);
+  if(vQuat != readStatusQuat()){
+    sendStatusQuat();
+  }
+  delay(20);
+  if(vDenTrangTriKh1 != readStatusDenTrangTriKh1()){
+    sendStatusDenTrangTriKh1();
+  }
+  delay(20);
+  if(vDenTranKh2 != readStatusDenTranhKh2()){
+    sendStatusDenTranKh2();
+  }
+  delay(20);
+  if(vDenChumKh2 != readStatusDenChumKh2()){
+    sendStatusDenChumKh2();
+  }
+  delay(20);
+  if(vDenTranhKh2 != readStatusDenTranhKh2()){
+    sendStatusDenTranhKh2();
+  }
+  delay(20);
+  if(vDenSan != readStatusDenSan()){
+    sendStatusDenSan();
+  }
+  delay(20);
+  if(vDenCong != readStatusDenCong()){
+    sendStatusDenCong();
+  }
+  delay(20);
+  if(vDenWC != readStatusDenWC()){
+    sendStatusDenWC();
+  }
+  delay(20);
+  if(vBinhNL != readStatusBinhNL()){
+    sendStatusBinhNL();
+  }
+  delay(20);
+  if(vDenCuaNgach != readStatusCuaNgach()){
+    sendStatusDenCuaNgach();
+  }
+  delay(20);
+  if(vDenBep1 != readStatusBep1()){
+    sendStatusDenBep1();
+  }
+  delay(20);
+  if(vDenBep2 != readStatusBep2()){
+    sendStatusDenBep2();
+  }
+  delay(20);
+  if(vKhiLoc != readStatusKhiLoc()){
+    sendStatusKhiLoc();
+  }
+  delay(20);
+  if(vATBep != readStatusATBep()){
+    sendStatusATBep();
+  }
+  delay(20);
+  if(vATTong != readStatusATTong()){
+    sendStatusATTong();
+  }
+  
+}
 void sendData(JsonObject &data)
 {
   mySerial.print("DATA");
@@ -216,8 +322,8 @@ void sendValueTempHumi()
 {
   // float h = dht.readHumidity();
   // float t = dht.readTemperature();
-  float h = random(60,80);
-  float t = random(25,35);
+  float h = random(60, 80);
+  float t = random(25, 35);
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   root["TEMP"] = t;
@@ -249,6 +355,7 @@ void changeDenTranKh1()
 void sendStatusDenTranKh1()
 {
   int value = readStatusDenTranKh1();
+  vDenTranKh1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -278,6 +385,7 @@ void changeDenChumKh1()
 void sendStatusDenChumKh1()
 {
   int value = readStatusDenChumKh1();
+  vDenChumKh1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -308,10 +416,12 @@ void changeDenTranhKh1()
 void sendStatusDenTranhKh1()
 {
   int value = readStatusDenTranhKh1();
+  vDenTranhKh1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0){
-     root[ID_DEN_TRANH_KH1] = !value;
+  if (value == 1 || value == 0)
+  {
+    root[ID_DEN_TRANH_KH1] = !value;
   }
   else
   {
@@ -355,6 +465,7 @@ void offQuat()
 void sendStatusQuat()
 {
   int value = readStatusQuat();
+  vQuat = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0 || value == 2 || value == 3)
@@ -405,6 +516,7 @@ void changeDenTrangTriKh1()
 void sendStatusDenTrangTriKh1()
 {
   int value = readStatusDenTrangTriKh1();
+  vDenTrangTriKh1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -434,6 +546,7 @@ void changeDenTranKh2()
 void sendStatusDenTranKh2()
 {
   int value = readStatusDenTranKh2();
+  vDenTranKh2 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -463,6 +576,7 @@ void changeDenChumKh2()
 void sendStatusDenChumKh2()
 {
   int value = readStatusDenChumKh2();
+  vDenChumKh2 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -492,6 +606,7 @@ void changeDenTranhKh2()
 void sendStatusDenTranhKh2()
 {
   int value = readStatusDenTranhKh2();
+  vDenTranhKh2 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -521,6 +636,7 @@ void changeDenSan()
 void sendStatusDenSan()
 {
   int value = readStatusDenSan();
+  vDenSan = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -550,6 +666,7 @@ void changeDenCong()
 void sendStatusDenCong()
 {
   int value = readStatusDenCong();
+  vDenCong = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -579,6 +696,7 @@ void changeDenWC()
 void sendStatusDenWC()
 {
   int value = readStatusDenWC();
+  vDenWC = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -609,6 +727,7 @@ void changeBinhNL()
 void sendStatusBinhNL()
 {
   int value = readStatusBinhNL();
+  vBinhNL = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -638,6 +757,7 @@ void changeDenCuaNgach()
 void sendStatusDenCuaNgach()
 {
   int value = readStatusCuaNgach();
+  vDenCuaNgach = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -667,6 +787,7 @@ void changeDenBep1()
 void sendStatusDenBep1()
 {
   int value = readStatusBep1();
+  vDenBep1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -697,6 +818,7 @@ void changeDenBep2()
 void sendStatusDenBep2()
 {
   int value = readStatusBep2();
+  vDenBep2 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -727,6 +849,7 @@ void changeKhiLoc()
 void sendStatusKhiLoc()
 {
   int value = readStatusKhiLoc();
+  vKhiLoc = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -771,6 +894,7 @@ void changeATbep()
 void sendStatusATBep()
 {
   int value = readStatusATBep();
+  vATBep = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)
@@ -800,6 +924,7 @@ void changeATTong()
 void sendStatusATTong()
 {
   int value = readStatusATTong();
+  vATTong = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0)

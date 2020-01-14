@@ -29,7 +29,7 @@ const int VALUE_DEN_WC = 0b00000011;
 const int VALUE_BINH_NL = 0b00001100;
 const int VALUE_DEN_CUA_NGACH = 0b00110000;
 const int VALUE_BEP_1 = 0b00110000;
-const int VALUE_BEP_2 = 0b00000011;
+const int VALUE_BEP_2 = 0b00110000;
 const int VALUE_KHI_LOC = 0b00000011;//????
 const int VALUE_AT_BEP = 0b00110000;
 const int VALUE_AT_TONG = 0b00110000;
@@ -84,3 +84,4 @@ const String ID_KHOI_CO = "C_S02";
 const String ID_DONGDIEN_VA_CONGSUAT = "C_S03";
 /*------Thông số cài đặt ------*/
 const unsigned long SCHEDULE_GET_VALUE_SENSOR = 30000UL; //Cứ sau 30s thì chu kỳ lặp lại
+const unsigned long SCHEDULE_GET_VALUE_DEVICE = 2000UL;

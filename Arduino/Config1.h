@@ -83,4 +83,4 @@ const String ID_TEMP_HUMI = "C_S01";
 const String ID_KHOI_CO = "C_S02";
 const String ID_DONGDIEN_VA_CONGSUAT = "C_S03";
 /*------Thông số cài đặt ------*/
-const unsigned long SCHEDULE_GET_VALUE_SENSOR = 30000UL; //Cứ sau 30s thì chu kỳ lặp lại
+

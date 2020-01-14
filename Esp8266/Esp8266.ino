@@ -61,8 +61,8 @@ void sendSocketServer(String command)
 // Cài đặt thông số ban đầu
 void setup()
 {
-  Serial.begin(57600);
-  mySerial.begin(115200); //Bật software serial để giao tiếp với Arduino, nhớ để baudrate trùng với software serial trên mạch arduino
+  Serial.begin(115200);
+  mySerial.begin(57600); //Bật software serial để giao tiếp với Arduino, nhớ để baudrate trùng với software serial trên mạch arduino
   delay(10);
 
   //Việc đầu tiên cần làm là kết nối vào mạng Wifi
@@ -104,7 +104,7 @@ void loop()
   if (!client.connected())
   {
     Serial.println(F("Reconnect server!!!"));
-    client.connect(host, port, namespace_esp8266);
+    client.reconnect(host, port, namespace_esp8266);
     return;
   }
   //Khi bắt được bất kỳ sự kiện nào thì chúng ta có hai tham số:
