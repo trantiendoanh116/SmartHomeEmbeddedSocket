@@ -36,9 +36,17 @@ int vDenTranKh1, vDenChumKh1;
 void loop()
 {
   if(isFirstUpload){
+
+    digitalWrite(10, HIGH);
+    delay(1000);
+    digitalWrite(10, LOW);
+    delay(1000);
+    digitalWrite(10, HIGH);
     Serial.println("First upload code");
-    vDenTranKh1 = readStatusDenTranKh1();
-    vDenChumKh1 = readStatusDenChumKh1();
+    sendValueTempHumi();
+    sendValueCOBep();
+    sendStatusDenTranKh1();
+    sendStatusDenChumKh1();
     isFirstUpload = false;
   }
   delay(20);
@@ -184,4 +192,3 @@ int readStatusDenChumKh1()
 {
   return digitalRead(11);
 }
-

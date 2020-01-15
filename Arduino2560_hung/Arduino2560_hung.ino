@@ -24,9 +24,6 @@ void setup()
   mySwitch.enableTransmit(10);
 
   dht.begin();
-  //offQuat();
-  // pinMode(10, OUTPUT); //test trên thiết bị của Trường
-  // pinMode(11, INPUT);
 
   pinMode(PIN_DEN_TRAN_KH1, INPUT);
   pinMode(PIN_DEN_CHUM_KH1, INPUT);
@@ -64,30 +61,35 @@ int vDenTranKh1, vDenChumKh1, vDenTranhKh1, vQuat, vDenTrangTriKh1, vDenTranKh2,
 
 void loop()
 {
-  if(isFirstLoop){
-     Serial.println("First loop after upload code -> update var golobal");
-     isFirstLoop = false;
-     vDenTranKh1 = readStatusDenTranKh1();
-     vDenChumKh1 = readStatusDenChumKh1();
-     vDenTranhKh1 = readStatusDenTranhKh1();
-     vQuat = readStatusQuat();
-     vDenTrangTriKh1 = readStatusDenTrangTriKh1();
-     vDenTranKh2 = readStatusDenTranKh2();
-     vDenChumKh2 = readStatusDenChumKh2();
-     vDenTranhKh2 = readStatusDenTranhKh2();
-     vDenSan = readStatusDenSan();
-     vDenCong = readStatusDenCong();
-     vDenWC = readStatusDenWC();
-     vBinhNL = readStatusBinhNL();
-     vDenCuaNgach = readStatusCuaNgach();
-     vDenBep1 = readStatusBep1();
-     vDenBep2 = readStatusBep2();
-     vKhiLoc = readStatusKhiLoc();
-     vATBep = readStatusATBep();
-     vATTong = readStatusATTong();
+  if (isFirstLoop)
+  {
+    Serial.println("First loop");
+    isFirstLoop = false;
+    sendStatusDenTranKh1();
+    sendStatusDenChumKh1();
+    sendStatusDenTranhKh1();
+    sendStatusQuat();
+    sendStatusDenTrangTriKh1();
+    sendStatusDenTranKh2();
+    sendStatusDenChumKh2();
+    sendStatusDenTranhKh2();
+    sendStatusDenSan();
+    sendStatusDenCong();
+    sendStatusDenWC();
+    sendStatusBinhNL();
+    sendStatusDenCuaNgach();
+    sendStatusDenBep1();
+    sendStatusDenBep2();
+    sendStatusKhiLoc();
+    sendStatusATBep();
+    sendStatusATTong();
+
+    sendValueTempHumi();
+    sendValueCOBep();
   }
-   //Chu trình kiểm tra có thiết bị thay đổi trạng thái
-  if(millis() - lastUpdatedDevice > SCHEDULE_GET_VALUE_DEVICE){
+  //Chu trình kiểm tra có thiết bị thay đổi trạng thái
+  if (millis() - lastUpdatedDevice > SCHEDULE_GET_VALUE_DEVICE)
+  {
     checkAndUpdateValueDevice();
   }
   //Chu trình cập nhật dữ liệu của các cảm biến
@@ -207,79 +209,97 @@ void processControl()
   }
 }
 
-void checkAndUpdateValueDevice(){
-  if(vDenTranKh1 != readStatusDenTranKh1()){
+void checkAndUpdateValueDevice()
+{
+  if (vDenTranKh1 != readStatusDenTranKh1())
+  {
     sendStatusDenTranKh1();
   }
   delay(20);
-  if(vDenChumKh1 != readStatusDenChumKh1()){
+  if (vDenChumKh1 != readStatusDenChumKh1())
+  {
     sendStatusDenChumKh1();
   }
   delay(20);
-  if(vDenTranhKh1 != readStatusDenTranhKh1()){
+  if (vDenTranhKh1 != readStatusDenTranhKh1())
+  {
     sendStatusDenTranhKh1();
   }
   delay(20);
-  if(vQuat != readStatusQuat()){
+  if (vQuat != readStatusQuat())
+  {
     sendStatusQuat();
   }
   delay(20);
-  if(vDenTrangTriKh1 != readStatusDenTrangTriKh1()){
+  if (vDenTrangTriKh1 != readStatusDenTrangTriKh1())
+  {
     sendStatusDenTrangTriKh1();
   }
   delay(20);
-  if(vDenTranKh2 != readStatusDenTranhKh2()){
+  if (vDenTranKh2 != readStatusDenTranhKh2())
+  {
     sendStatusDenTranKh2();
   }
   delay(20);
-  if(vDenChumKh2 != readStatusDenChumKh2()){
+  if (vDenChumKh2 != readStatusDenChumKh2())
+  {
     sendStatusDenChumKh2();
   }
   delay(20);
-  if(vDenTranhKh2 != readStatusDenTranhKh2()){
+  if (vDenTranhKh2 != readStatusDenTranhKh2())
+  {
     sendStatusDenTranhKh2();
   }
   delay(20);
-  if(vDenSan != readStatusDenSan()){
+  if (vDenSan != readStatusDenSan())
+  {
     sendStatusDenSan();
   }
   delay(20);
-  if(vDenCong != readStatusDenCong()){
+  if (vDenCong != readStatusDenCong())
+  {
     sendStatusDenCong();
   }
   delay(20);
-  if(vDenWC != readStatusDenWC()){
+  if (vDenWC != readStatusDenWC())
+  {
     sendStatusDenWC();
   }
   delay(20);
-  if(vBinhNL != readStatusBinhNL()){
+  if (vBinhNL != readStatusBinhNL())
+  {
     sendStatusBinhNL();
   }
   delay(20);
-  if(vDenCuaNgach != readStatusCuaNgach()){
+  if (vDenCuaNgach != readStatusCuaNgach())
+  {
     sendStatusDenCuaNgach();
   }
   delay(20);
-  if(vDenBep1 != readStatusBep1()){
+  if (vDenBep1 != readStatusBep1())
+  {
     sendStatusDenBep1();
   }
   delay(20);
-  if(vDenBep2 != readStatusBep2()){
+  if (vDenBep2 != readStatusBep2())
+  {
     sendStatusDenBep2();
   }
   delay(20);
-  if(vKhiLoc != readStatusKhiLoc()){
+  if (vKhiLoc != readStatusKhiLoc())
+  {
     sendStatusKhiLoc();
   }
   delay(20);
-  if(vATBep != readStatusATBep()){
+  if (vATBep != readStatusATBep())
+  {
     sendStatusATBep();
   }
   delay(20);
-  if(vATTong != readStatusATTong()){
+  if (vATTong != readStatusATTong())
+  {
     sendStatusATTong();
   }
-  
 }
 void sendData(JsonObject &data)
 {
