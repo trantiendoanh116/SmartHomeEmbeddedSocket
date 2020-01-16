@@ -14,8 +14,9 @@ SerialCommand sCmd(mySerial);
 //Khai báo RCSwitch
 RCSwitch mySwitch = RCSwitch();
 //Khai báo đo nhiệt độ, độ ẩm
+const int DHTPIN = 2; //Đọc dữ liệu từ DHT22 ở chân D2 trên mạch Arduino
 const int DHTTYPE = DHT22;
-DHT dht(PIN_TEMP_HUMI, DHTTYPE);
+DHT dht(DHTPIN, DHTTYPE);
 void setup()
 {
   Serial.begin(115200);
@@ -61,6 +62,7 @@ int vDenTranKh1, vDenChumKh1, vDenTranhKh1, vQuat, vDenTrangTriKh1, vDenTranKh2,
 
 void loop()
 {
+
   if (isFirstLoop)
   {
     Serial.println("First loop");
@@ -340,10 +342,10 @@ void sendStatusLight()
 /*----------------Đo nhiệt độ, đổ ẩm và khí CO------------*/
 void sendValueTempHumi()
 {
-  // float h = dht.readHumidity();
-  // float t = dht.readTemperature();
-  float h = random(60, 80);
-  float t = random(25, 35);
+ float h = dht.readHumidity(); //Đọc độ ẩm
+  float t = dht.readTemperature(); //Đọc nhiệt độ
+  //float h = random(60, 80);
+  //loat t = random(25, 35);
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   root["TEMP"] = t;
@@ -421,7 +423,7 @@ void sendStatusDenChumKh1()
 
 int readStatusDenChumKh1()
 {
-  Serial.println(digitalRead(PIN_DEN_CHUM_KH1));
+  //Serial.println(digitalRead(PIN_DEN_CHUM_KH1));
   return digitalRead(PIN_DEN_CHUM_KH1);
 }
 /*----------------DenTranhKH1--------------*/
@@ -504,9 +506,9 @@ int readStatusQuat()
   int speed1Status = digitalRead(PIN_QUAT_TRAN_1);
   int speed2Status = digitalRead(PIN_QUAT_TRAN_2);
   int speed3Status = digitalRead(PIN_QUAT_TRAN_3);
-  Serial.println(digitalRead(PIN_QUAT_TRAN_1));
-  Serial.println(digitalRead(PIN_QUAT_TRAN_2));
-  Serial.println(digitalRead(PIN_QUAT_TRAN_3));
+//  Serial.println(digitalRead(PIN_QUAT_TRAN_1));
+//  Serial.println(digitalRead(PIN_QUAT_TRAN_2));
+//  Serial.println(digitalRead(PIN_QUAT_TRAN_3));
   if (speed1Status == 0)
   {
     return 3;
@@ -823,7 +825,7 @@ void sendStatusDenBep1()
 
 int readStatusBep1()
 {
-  Serial.println(digitalRead(PIN_DEN_BEP_1));
+  //Serial.println(digitalRead(PIN_DEN_BEP_1));
   return digitalRead(PIN_DEN_BEP_1);
 }
 /*----------------Den Bep2--------------*/
