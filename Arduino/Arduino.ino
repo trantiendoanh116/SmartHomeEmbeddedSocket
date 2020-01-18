@@ -1,17 +1,13 @@
 #include <ArduinoJson.h>
 #include <SoftwareSerial.h>
 #include <SerialCommand.h>
-#include <RCSwitch.h>
-#include <DHT.h>
 
-extern "C"
-{
-#include "Config1.h"
-}
+const byte RX = 5;
+const byte TX = 4;
 //Khai báo serial
-SoftwareSerial mySerial = SoftwareSerial(SERIAL_RX, SERIAL_TX);
+SoftwareSerial mySerial = SoftwareSerial(RX, TX);
 SerialCommand sCmd(mySerial);
-//Khai báo RCSwitch
+
 void setup()
 {
   Serial.begin(115200);
@@ -24,7 +20,7 @@ void setup()
 
   sCmd.addCommand("CONTROL", processControl);
 }
-const unsigned long SCHEDULE_GET_VALUE_SENSOR = 10000UL; //Cứ sau 30s thì chu kỳ lặp lại
+const unsigned long SCHEDULE_GET_VALUE_SENSOR = 60000UL; //Cứ sau 30s thì chu kỳ lặp lại
 unsigned long lastUpdatedSensor = 0;
 
 const unsigned long SCHEDULE_GET_VALUE_DEVICE = 2000UL; //Cứ sau 30s thì chu kỳ lặp lại
@@ -36,13 +32,6 @@ int vDenTranKh1, vDenChumKh1;
 void loop()
 {
   if(isFirstUpload){
-
-    digitalWrite(10, HIGH);
-    delay(1000);
-    digitalWrite(10, LOW);
-    delay(1000);
-    digitalWrite(10, HIGH);
-    Serial.println("First upload code");
     sendValueTempHumi();
     sendValueCOBep();
     sendStatusDenTranKh1();
@@ -137,10 +126,21 @@ void sendValueCOBep()
 /*----------------DenTranKH1--------------*/
 void changeDenTranKh1()
 {
-  Serial.println("Change DenTranKH1");
-  int lightStatus = digitalRead(11);
-  digitalWrite(10, !lightStatus);
-  sendStatusDenTranKh1();
+  // Serial.println("Change DenTranKH1");
+  // int lightStatus = digitalRead(11);
+  // digitalWrite(10, !lightStatus);
+  // sendStatusDenTranKh1();
+
+  digitalWrite(10, HIGH);
+  delay(500);
+  digitalWrite(10, LOW);
+  delay(500);
+  digitalWrite(10, HIGH);
+  delay(500);
+  digitalWrite(10, LOW);
+  delay(500);
+   digitalWrite(10, HIGH);
+   sendStatusDenTranKh1();
 }
 void sendStatusDenTranKh1()
 {

@@ -33,6 +33,7 @@ const int VALUE_BEP_2 = 0b00110000;
 const int VALUE_KHI_LOC = 0b00000011;//????
 const int VALUE_AT_BEP = 0b00110000;
 const int VALUE_AT_TONG = 0b00110000;
+const int VALUE_RESET_CN = 0b11000000;
 /*--------Giá trị Pin để lấy giá trị/trang thái -------*/
 const int PIN_DEN_TRAN_KH1 = 46;
 const int PIN_DEN_CHUM_KH1 = 44;
@@ -55,7 +56,7 @@ const int PIN_KHI_LOC_1 = 41;
 const int PIN_KHI_LOC_2 =42;
 const int PIN_AT_BEP = 23;
 const int PIN_AT_TONG = 22;
-const int PIN_TEMP_HUMI = 53; //A2
+const int PIN_TEMP_HUMI = 2;
 const int PIN_KHOI_CO_TX = 6;
 const int PIN_KHOI_CO_RX = 7;
 const int PIN_DONGDIEN_VA_CONGSUAT_TX = 11;

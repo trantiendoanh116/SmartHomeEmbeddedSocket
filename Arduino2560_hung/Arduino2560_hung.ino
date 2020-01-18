@@ -14,9 +14,8 @@ SerialCommand sCmd(mySerial);
 //Khai báo RCSwitch
 RCSwitch mySwitch = RCSwitch();
 //Khai báo đo nhiệt độ, độ ẩm
-const int DHTPIN = 2; //Đọc dữ liệu từ DHT22 ở chân D2 trên mạch Arduino
 const int DHTTYPE = DHT22;
-DHT dht(DHTPIN, DHTTYPE);
+DHT dht(PIN_TEMP_HUMI, DHTTYPE);
 void setup()
 {
   Serial.begin(115200);
@@ -67,6 +66,21 @@ void loop()
   {
     Serial.println("First loop");
     isFirstLoop = false;
+    //Reset CN
+    resetCN1();
+    resetCN2();
+    resetCN3();
+    resetCN4();
+    resetCN5();
+    resetCN6();
+    resetCN7();
+    resetCN8();
+    resetCN9();
+    resetCN10();
+    resetCN11();
+    resetCN12();
+    delay(500);
+    //Update value to server
     sendStatusDenTranKh1();
     sendStatusDenChumKh1();
     sendStatusDenTranhKh1();
@@ -85,7 +99,6 @@ void loop()
     sendStatusKhiLoc();
     sendStatusATBep();
     sendStatusATTong();
-
     sendValueTempHumi();
     sendValueCOBep();
   }
@@ -316,28 +329,92 @@ void sendData(JsonObject &data)
   data.printTo(Serial);
   Serial.print('\n');
 }
-/*----------------Test in Trường's device--------------*/
-void changeLight()
+/*----------------Reset CN--------------*/
+void resetCN1()
 {
-  int lightStatus = digitalRead(11);
-  digitalWrite(10, !lightStatus);
-  sendStatusLight();
+  Serial.println("Reset CN1");
+  mySwitch.send((ADD_CN1 << 8) | VALUE_RESET_CN, 24);
+  delay(100);
+  mySwitch.send((ADD_CN1 << 8) | 0b00000000, 24);
 }
-void sendStatusLight()
+void resetCN2()
 {
-  int value = digitalRead(11);
-  StaticJsonBuffer<200> jsonBuffer;
-  JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_DEN_CHUM_KH1] = value;
-  }
-  else
-  {
-    root[ID_DEN_CHUM_KH1] = -1;
-  }
-  sendData(root);
+  Serial.println("Reset CN2");
+  mySwitch.send((ADD_CN2 << 8) | VALUE_RESET_CN, 24);
+  delay(100);
+  mySwitch.send((ADD_CN2 << 8) | 0b00000000, 24);
 }
+void resetCN3()
+{
+  Serial.println("Reset CN3");
+  mySwitch.send((ADD_CN3 << 8) | VALUE_RESET_CN, 24);
+  delay(100);
+  mySwitch.send((ADD_CN3 << 8) | 0b00000000, 24);
+}
+void resetCN4()
+{
+  Serial.println("Reset CN4");
+  mySwitch.send((ADD_CN4 << 8) | VALUE_RESET_CN, 24);
+  delay(100);
+  mySwitch.send((ADD_CN4 << 8) | 0b00000000, 24);
+}
+void resetCN5()
+{
+  Serial.println("Reset CN5");
+  mySwitch.send((ADD_CN5 << 8) | VALUE_RESET_CN, 24);
+  delay(100);
+  mySwitch.send((ADD_CN5 << 8) | 0b00000000, 24);
+}
+void resetCN6()
+{
+  Serial.println("Reset CN6");
+  mySwitch.send((ADD_CN6 << 8) | VALUE_RESET_CN, 24);
+  delay(100);
+  mySwitch.send((ADD_CN6 << 8) | 0b00000000, 24);
+}
+void resetCN7()
+{
+  Serial.println("Reset CN7");
+  mySwitch.send((ADD_CN7 << 8) | VALUE_RESET_CN, 24);
+  delay(100);
+  mySwitch.send((ADD_CN7 << 8) | 0b00000000, 24);
+}
+void resetCN8()
+{
+  Serial.println("Reset CN8");
+  mySwitch.send((ADD_CN8 << 8) | VALUE_RESET_CN, 24);
+  delay(100);
+  mySwitch.send((ADD_CN8 << 8) | 0b00000000, 24);
+}
+void resetCN9()
+{
+  Serial.println("Reset CN9");
+  mySwitch.send((ADD_CN9 << 8) | VALUE_RESET_CN, 24);
+  delay(100);
+  mySwitch.send((ADD_CN9 << 8) | 0b00000000, 24);
+}
+void resetCN10()
+{
+  Serial.println("Reset CN10");
+  mySwitch.send((ADD_CN10 << 8) | VALUE_RESET_CN, 24);
+  delay(100);
+  mySwitch.send((ADD_CN10 << 8) | 0b00000000, 24);
+}
+void resetCN11()
+{
+  Serial.println("Reset CN11");
+  mySwitch.send((ADD_CN11 << 8) | VALUE_RESET_CN, 24);
+  delay(100);
+  mySwitch.send((ADD_CN11 << 8) | 0b00000000, 24);
+}
+void resetCN12()
+{
+  Serial.println("Reset CN12");
+  mySwitch.send((ADD_CN12 << 8) | VALUE_RESET_CN, 24);
+  delay(100);
+  mySwitch.send((ADD_CN12 << 8) | 0b00000000, 24);
+}
+
 
 /*----------------Đo nhiệt độ, đổ ẩm và khí CO------------*/
 void sendValueTempHumi()
