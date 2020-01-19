@@ -187,7 +187,7 @@ void processControl()
   }
   if (root.containsKey(ID_KHI_LOC))
   {
-    changeKhiLoc();
+    changeKhiLoc(root);
   }
   if (root.containsKey(ID_AT_BEP))
   {
@@ -415,11 +415,10 @@ void resetCN12()
   mySwitch.send((ADD_CN12 << 8) | 0b00000000, 24);
 }
 
-
 /*----------------Đo nhiệt độ, đổ ẩm và khí CO------------*/
 void sendValueTempHumi()
 {
- float h = dht.readHumidity(); //Đọc độ ẩm
+  float h = dht.readHumidity();    //Đọc độ ẩm
   float t = dht.readTemperature(); //Đọc nhiệt độ
   //float h = random(60, 80);
   //loat t = random(25, 35);
@@ -548,7 +547,7 @@ void changeQuatTran(JsonObject &root)
 void onQuat()
 {
   Serial.println("Change ON QuatTran");
-  mySwitch.send((ADD_CN7 << 8) | 0b00000011, 24);
+  mySwitch.send((ADD_CN7 << 8) | VALUE_QUAT_TRAN_ON, 24);
   delay(80);
   mySwitch.send((ADD_CN7 << 8) | 0b00000000, 24);
   sendStatusQuat();
@@ -556,7 +555,7 @@ void onQuat()
 void offQuat()
 {
   Serial.println("Change OFF QuatTran");
-  mySwitch.send((ADD_CN7 << 8) | 0b00001100, 24);
+  mySwitch.send((ADD_CN7 << 8) | VALUE_QUAT_TRAN_OFF, 24);
   delay(80);
   mySwitch.send((ADD_CN7 << 8) | 0b00000000, 24);
   sendStatusQuat();
@@ -583,9 +582,6 @@ int readStatusQuat()
   int speed1Status = digitalRead(PIN_QUAT_TRAN_1);
   int speed2Status = digitalRead(PIN_QUAT_TRAN_2);
   int speed3Status = digitalRead(PIN_QUAT_TRAN_3);
-//  Serial.println(digitalRead(PIN_QUAT_TRAN_1));
-//  Serial.println(digitalRead(PIN_QUAT_TRAN_2));
-//  Serial.println(digitalRead(PIN_QUAT_TRAN_3));
   if (speed1Status == 0)
   {
     return 3;
@@ -937,23 +933,44 @@ int readStatusBep2()
 }
 
 /*----------------Khi Loc--------------*/
-void changeKhiLoc()
+void changeKhiLoc(JsonObject &root)
 {
-  Serial.println("Change Khi loc");
-  mySwitch.send((ADD_CN10 << 8) | VALUE_KHI_LOC, 24);
-  delay(100);
-  mySwitch.send((ADD_CN10 << 8) | 0b00000000, 24);
-  sendStatusDenBep2();
+  if (root[ID_KHI_LOC] == "on")
+  {
+    onKhiLoc();
+  }
+  else
+  {
+    offKhiLoc();
+  }
 }
+
+void onKhiLoc()
+{
+  Serial.println("Change ON KhiLoc");
+  mySwitch.send((ADD_CN12 << 8) | VALUE_KHI_LOC_ON, 24);
+  delay(80);
+  mySwitch.send((ADD_CN12 << 8) | 0b00000000, 24);
+  sendStatusKhiLoc();
+}
+void offKhiLoc()
+{
+  Serial.println("Change OFF KhiLoc");
+  mySwitch.send((ADD_CN12 << 8) | VALUE_KHI_LOC_OFF, 24);
+  delay(80);
+  mySwitch.send((ADD_CN12 << 8) | 0b00000000, 24);
+  sendStatusKhiLoc();
+}
+
 void sendStatusKhiLoc()
 {
   int value = readStatusKhiLoc();
   vKhiLoc = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
+  if (value == 0 || value == 1 || value == 2 || value == 3)
   {
-    root[ID_KHI_LOC] = !value;
+    root[ID_KHI_LOC] = value;
   }
   else
   {
@@ -966,19 +983,23 @@ int readStatusKhiLoc()
 {
   int cap1 = digitalRead(PIN_KHI_LOC_1);
   int cap2 = digitalRead(PIN_KHI_LOC_2);
-  if (cap1 == 0 && cap2 == 0)
+  int cap3 = digitalRead(PIN_KHI_LOC_3);
+  if (cap1 == 0)
   {
-    return 0;
+    return 3;
   }
-  else if (cap1 == 1)
-  {
-    return 1;
-  }
-  else if (cap2 == 1)
+  else if (cap2 == 0)
   {
     return 2;
   }
-  return -1;
+  else if (cap3 == 0)
+  {
+    return 1;
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 /*----------------AT Bep--------------*/
