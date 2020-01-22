@@ -67,19 +67,19 @@ void loop()
     Serial.println("First loop");
     isFirstLoop = false;
     //Reset CN
-    resetCN1();
-    resetCN2();
-    resetCN3();
-    resetCN4();
-    resetCN5();
-    resetCN6();
-    resetCN7();
-    resetCN8();
-    resetCN9();
-    resetCN10();
-    resetCN11();
-    resetCN12();
-    delay(500);
+     resetCN1();
+     resetCN2();
+     resetCN3();
+     resetCN4();
+     resetCN5();
+     resetCN6();
+     resetCN7();
+     resetCN8();
+     resetCN9();
+     resetCN10();
+     resetCN11();
+     resetCN12();
+     delay(500);
     //Update value to server
     sendStatusDenTranKh1();
     sendStatusDenChumKh1();
@@ -306,10 +306,10 @@ void checkAndUpdateValueDevice()
     sendStatusKhiLoc();
   }
   delay(20);
-  if (vATBep != readStatusATBep())
-  {
-    sendStatusATBep();
-  }
+  // if (vATBep != readStatusATBep())
+  // {
+  //   sendStatusATBep();
+  // }
   delay(20);
   if (vATTong != readStatusATTong())
   {
@@ -1030,7 +1030,8 @@ void sendStatusATBep()
 
 int readStatusATBep()
 {
-  return digitalRead(PIN_AT_BEP);
+  //return digitalRead(PIN_AT_BEP);
+  return -1;
 }
 /*----------------AT Tong--------------*/
 void changeATTong()
@@ -1060,5 +1061,6 @@ void sendStatusATTong()
 
 int readStatusATTong()
 {
-  return digitalRead(PIN_AT_TONG);
+  //return digitalRead(PIN_AT_TONG);
+  return -1;
 }
