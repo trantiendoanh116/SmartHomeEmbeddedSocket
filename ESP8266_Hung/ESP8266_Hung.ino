@@ -27,8 +27,7 @@ SerialCommand sCmd(mySerial); // Khai báo biến sử dụng thư viện Serial
 
 //Cài đặt Socket client
 SocketIOClient client;
-char host[] = "smart-home-hung.herokuapp.com"; //Địa chỉ IP dịch vụ, hãy thay đổi nó theo địa chỉ IP Socket server của bạn.
-//smarthome116.herokuapp.com
+char host[] = "smarthome116.herokuapp.com"; //Địa chỉ IP dịch vụ, hãy thay đổi nó theo địa chỉ IP Socket server của bạn.
 int port = 80;                        //80,3484                  //Cổng dịch vụ socket server do chúng ta tạo!
 char namespace_esp8266[] = "esp8266"; //Thêm Arduino!
 
@@ -105,7 +104,7 @@ void loop()
   if (!client.connected())
   {
     Serial.println(F("Reconnect server!!!"));
-    client.connect(host, port, namespace_esp8266);
+    client.reconnect(host, port, namespace_esp8266);
     return;
   }
   //Khi bắt được bất kỳ sự kiện nào thì chúng ta có hai tham số:

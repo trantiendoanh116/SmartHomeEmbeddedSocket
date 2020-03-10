@@ -20,7 +20,7 @@ void setup()
 {
   Serial.begin(115200);
   mySerial.begin(57600);
-
+ 
   mySwitch.enableTransmit(10);
 
   dht.begin();
@@ -434,7 +434,7 @@ void sendValueTempHumi()
 }
 void sendValueCOBep()
 {
-  float value = random(20, 40);
+  int value = analogRead(A3);
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   root[ID_KHOI_CO] = value;
@@ -456,20 +456,16 @@ void sendStatusDenTranKh1()
   vDenTranKh1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_DEN_TRAN_KH1] = !value;
-  }
-  else
-  {
-    root[ID_DEN_TRAN_KH1] = -1;
-  }
+  root[ID_DEN_TRAN_KH1] = value;
   sendData(root);
 }
 
 int readStatusDenTranKh1()
 {
-  return digitalRead(PIN_DEN_TRAN_KH1);
+  int value = digitalRead(PIN_DEN_TRAN_KH1);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 /*----------------DenChumKH1--------------*/
 void changeDenChumKh1()
@@ -486,21 +482,17 @@ void sendStatusDenChumKh1()
   vDenChumKh1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_DEN_CHUM_KH1] = !value;
-  }
-  else
-  {
-    root[ID_DEN_CHUM_KH1] = -1;
-  }
+  root[ID_DEN_CHUM_KH1] = value;
   sendData(root);
 }
 
 int readStatusDenChumKh1()
 {
-  //Serial.println(digitalRead(PIN_DEN_CHUM_KH1));
-  return digitalRead(PIN_DEN_CHUM_KH1);
+  int value = digitalRead(PIN_DEN_CHUM_KH1);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
+
 }
 /*----------------DenTranhKH1--------------*/
 void changeDenTranhKh1()
@@ -517,20 +509,16 @@ void sendStatusDenTranhKh1()
   vDenTranhKh1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_DEN_TRANH_KH1] = !value;
-  }
-  else
-  {
-    root[ID_DEN_TRANH_KH1] = -1;
-  }
+  root[ID_DEN_TRANH_KH1] = value;
   sendData(root);
 }
 
 int readStatusDenTranhKh1()
 {
-  return digitalRead(PIN_DEN_TRANH_KH1);
+  int value = digitalRead(PIN_DEN_TRANH_KH1);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 /*----------------QuatTran--------------*/
 void changeQuatTran(JsonObject &root)
@@ -614,20 +602,16 @@ void sendStatusDenTrangTriKh1()
   vDenTrangTriKh1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_DEN_TRANGTRI_KH1] = !value;
-  }
-  else
-  {
-    root[ID_DEN_TRANGTRI_KH1] = -1;
-  }
+  root[ID_DEN_TRANGTRI_KH1] = value;
   sendData(root);
 }
 
 int readStatusDenTrangTriKh1()
 {
-  return digitalRead(PIN_DEN_TRANGTRI_KH1);
+  int value = digitalRead(PIN_DEN_TRANGTRI_KH1);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 /*----------------DenTranKH2--------------*/
 void changeDenTranKh2()
@@ -644,20 +628,16 @@ void sendStatusDenTranKh2()
   vDenTranKh2 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_DEN_TRAN_KH2] = !value;
-  }
-  else
-  {
-    root[ID_DEN_TRAN_KH2] = -1;
-  }
+  root[ID_DEN_TRAN_KH2] = value;
   sendData(root);
 }
 
 int readStatusDenTranKh2()
 {
-  return digitalRead(PIN_DEN_TRAN_KH2);
+  int value = digitalRead(PIN_DEN_TRAN_KH2);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 /*----------------DenChumKH2--------------*/
 void changeDenChumKh2()
@@ -674,20 +654,16 @@ void sendStatusDenChumKh2()
   vDenChumKh2 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_DEN_CHUM_KH2] = !value;
-  }
-  else
-  {
-    root[ID_DEN_CHUM_KH2] = -1;
-  }
+  root[ID_DEN_CHUM_KH2] = value;
   sendData(root);
 }
 
 int readStatusDenChumKh2()
 {
-  return digitalRead(PIN_DEN_CHUM_KH2);
+  int value = digitalRead(PIN_DEN_CHUM_KH2);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;;
 }
 /*----------------DenTranhKH2--------------*/
 void changeDenTranhKh2()
@@ -704,20 +680,16 @@ void sendStatusDenTranhKh2()
   vDenTranhKh2 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_DEN_TRANH_KH2] = !value;
-  }
-  else
-  {
-    root[ID_DEN_TRANH_KH2] = -1;
-  }
+  root[ID_DEN_TRANH_KH2] = value;
   sendData(root);
 }
 
 int readStatusDenTranhKh2()
 {
-  return digitalRead(PIN_DEN_TRANH_KH2);
+  int value = digitalRead(PIN_DEN_TRANH_KH2);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 /*----------------DenSan--------------*/
 void changeDenSan()
@@ -734,20 +706,16 @@ void sendStatusDenSan()
   vDenSan = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_DEN_SAN] = !value;
-  }
-  else
-  {
-    root[ID_DEN_SAN] = -1;
-  }
+  root[ID_DEN_SAN] = value;
   sendData(root);
 }
 
 int readStatusDenSan()
 {
-  return digitalRead(PIN_DEN_SAN);
+  int value = digitalRead(PIN_DEN_SAN);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 /*----------------DenCong--------------*/
 void changeDenCong()
@@ -764,20 +732,16 @@ void sendStatusDenCong()
   vDenCong = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_DEN_CONG] = !value;
-  }
-  else
-  {
-    root[ID_DEN_CONG] = -1;
-  }
+  root[ID_DEN_CONG] = value;
   sendData(root);
 }
 
 int readStatusDenCong()
 {
-  return digitalRead(PIN_DEN_CONG);
+  int value = digitalRead(PIN_DEN_CONG);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 /*----------------DenWC--------------*/
 void changeDenWC()
@@ -794,20 +758,16 @@ void sendStatusDenWC()
   vDenWC = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_DEN_WC] = !value;
-  }
-  else
-  {
-    root[ID_DEN_WC] = -1;
-  }
+  root[ID_DEN_WC] = value;
   sendData(root);
 }
 
 int readStatusDenWC()
 {
-  return digitalRead(PIN_DEN_WC);
+  int value = digitalRead(PIN_DEN_WC);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 
 /*----------------BinhNL--------------*/
@@ -825,20 +785,16 @@ void sendStatusBinhNL()
   vBinhNL = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_BINH_NL] = !value;
-  }
-  else
-  {
-    root[ID_BINH_NL] = -1;
-  }
+  root[ID_BINH_NL] = value;
   sendData(root);
 }
 
 int readStatusBinhNL()
 {
-  return digitalRead(PIN_BINH_NL);
+  int value = digitalRead(PIN_BINH_NL);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 /*----------------DenCuaNgach--------------*/
 void changeDenCuaNgach()
@@ -855,20 +811,16 @@ void sendStatusDenCuaNgach()
   vDenCuaNgach = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_DEN_CUA_NGACH] = !value;
-  }
-  else
-  {
-    root[ID_DEN_CUA_NGACH] = -1;
-  }
+  root[ID_DEN_CUA_NGACH] = value;
   sendData(root);
 }
 
 int readStatusCuaNgach()
 {
-  return digitalRead(PIN_DEN_CUA_NGACH);
+  int value = digitalRead(PIN_DEN_CUA_NGACH);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 /*----------------Den Bep1--------------*/
 void changeDenBep1()
@@ -885,21 +837,16 @@ void sendStatusDenBep1()
   vDenBep1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_BEP_1] = !value;
-  }
-  else
-  {
-    root[ID_BEP_1] = -1;
-  }
+  root[ID_BEP_1] = value;
   sendData(root);
 }
 
 int readStatusBep1()
 {
-  //Serial.println(digitalRead(PIN_DEN_BEP_1));
-  return digitalRead(PIN_DEN_BEP_1);
+  int value = digitalRead(PIN_DEN_BEP_1);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 /*----------------Den Bep2--------------*/
 void changeDenBep2()
@@ -916,20 +863,16 @@ void sendStatusDenBep2()
   vDenBep2 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_BEP_2] = !value;
-  }
-  else
-  {
-    root[ID_BEP_2] = -1;
-  }
+  root[ID_BEP_2] = value;
   sendData(root);
 }
 
 int readStatusBep2()
 {
-  return digitalRead(PIN_DEN_BEP_2);
+  int value = digitalRead(PIN_DEN_BEP_2);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 
 /*----------------Khi Loc--------------*/
@@ -1017,20 +960,16 @@ void sendStatusATBep()
   vATBep = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_AT_BEP] = !value;
-  }
-  else
-  {
-    root[ID_AT_BEP] = -1;
-  }
+  root[ID_AT_BEP] = value;
   sendData(root);
 }
 
 int readStatusATBep()
 {
-  return digitalRead(PIN_AT_BEP);
+  int value = digitalRead(PIN_AT_BEP);
+  if (value == 0) return 1;
+  if (value == 1) return 0;
+  return -1;
 }
 /*----------------AT Tong--------------*/
 void changeATTong()
@@ -1047,18 +986,14 @@ void sendStatusATTong()
   vATTong = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  if (value == 1 || value == 0)
-  {
-    root[ID_AT_TONG] = !value;
-  }
-  else
-  {
-    root[ID_AT_TONG] = -1;
-  }
+  root[ID_AT_TONG] = value;
   sendData(root);
 }
 
 int readStatusATTong()
 {
-  return digitalRead(PIN_AT_TONG);
+  //  int value = digitalRead(PIN_AT_TONG);
+  //  if(value == 0) return 1;
+  //  if (value == 1) return 0;
+  return -1;
 }

@@ -3,15 +3,14 @@
 #define LWIP_FEATURES whatever
 #define LWIP_OPEN_SRC whatever
 
+#include <SocketIOClient.h>
+#include <SerialCommand.h>
 //Thư viện Wifi manager
 #include <ESP8266WiFi.h>
 #include <DNSServer.h>
 #include <ESP8266WebServer.h>
 #include "WiFiManager.h"
-//
-#include <SoftwareSerial.h>
-#include <SocketIOClient.h>
-#include <SerialCommand.h>
+
 
 //include thư viện để kiểm tra free RAM trên con esp8266
 extern "C"
@@ -23,6 +22,7 @@ const byte RX = 5; // chân GPI05 đấu với chân D4 của Arduino
 const byte TX = 4; // chân GPI04 đấu với chân D5 của Arduino
 
 SoftwareSerial mySerial(RX, TX, false, 256);
+//SoftwareSerial mySerial;
 SerialCommand sCmd(mySerial); // Khai báo biến sử dụng thư viện Serial Command
 
 //Cài đặt Socket client
@@ -61,8 +61,8 @@ void sendSocketServer(String command)
 // Cài đặt thông số ban đầu
 void setup()
 {
-  Serial.begin(115200);
-  mySerial.begin(57600); //Bật software serial để giao tiếp với Arduino, nhớ để baudrate trùng với software serial trên mạch arduino
+  //Serial.begin(115200);
+  mySerial.begin(9600);
   delay(10);
 
   //Việc đầu tiên cần làm là kết nối vào mạng Wifi

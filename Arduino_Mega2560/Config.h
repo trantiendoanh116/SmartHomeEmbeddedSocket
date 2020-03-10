@@ -36,8 +36,8 @@ const int VALUE_AT_BEP = 0b00110000;
 const int VALUE_AT_TONG = 0b00110000;
 const int VALUE_RESET_CN = 0b11000000;
 /*--------Giá trị Pin để lấy giá trị/trang thái -------*/
-const int PIN_DEN_TRAN_KH1 = 46;
-const int PIN_DEN_CHUM_KH1 = 44;
+const int PIN_DEN_TRAN_KH1 = 44;
+const int PIN_DEN_CHUM_KH1 = 46;
 const int PIN_DEN_TRANH_KH1 = 45;
 const int PIN_QUAT_TRAN_1 = 32;
 const int PIN_QUAT_TRAN_2 = 33;
@@ -59,10 +59,9 @@ const int PIN_KHI_LOC_3 =37;
 const int PIN_AT_BEP = 23;
 const int PIN_AT_TONG = 22;
 const int PIN_TEMP_HUMI = 2;
-const int PIN_KHOI_CO_TX = 6;
-const int PIN_KHOI_CO_RX = 7;
-const int PIN_DONGDIEN_VA_CONGSUAT_TX = 11;
-const int PIN_DONGDIEN_VA_CONGSUAT_RX = 12;
+//const String PIN_KHOI_CO = A3;
+const int PIN_DONGDIEN_TX = 11;
+const int PIN_DONGDIEN_RX = 12;
 /*--------Định nghĩa ID cho các thiết bị -------*/
 const String ID_DEN_TRAN_KH1 = "F1_D01";
 const String ID_DEN_CHUM_KH1 = "F1_D02";
@@ -84,7 +83,8 @@ const String ID_AT_BEP = "C_D01";
 const String ID_AT_TONG = "C_D02";
 const String ID_TEMP_HUMI = "C_S01";
 const String ID_KHOI_CO = "C_S02";
-const String ID_DONGDIEN_VA_CONGSUAT = "C_S03";
+const String ID_DONGDIEN = "C_S03_POWER";
+const String ID_CONGSUAT_TIEUTHU = "C_S03_ENERGY";
 /*------Thông số cài đặt ------*/
-const unsigned long SCHEDULE_GET_VALUE_SENSOR = 30000UL; //Cứ sau 30s thì chu kỳ lặp lại
+const unsigned long SCHEDULE_GET_VALUE_SENSOR = 20000UL; //Cứ sau 30s thì chu kỳ lặp lại
 const unsigned long SCHEDULE_GET_VALUE_DEVICE = 2000UL;
