@@ -67,7 +67,10 @@ void loop()
     Serial.println("First loop");
     isFirstLoop = false;
     //Reset CN
+<<<<<<< HEAD:Dev/Arduino_Truong_Full/Arduino_Truong_Full.ino
     /*
+=======
+>>>>>>> 913f9d67398e338873a5361ab14d08250f462e1e:Arduino2560_hung/Arduino2560_hung.ino
      resetCN1();
      resetCN2();
      resetCN3();
@@ -81,7 +84,10 @@ void loop()
      resetCN11();
      resetCN12();
      delay(500);
+<<<<<<< HEAD:Dev/Arduino_Truong_Full/Arduino_Truong_Full.ino
      */
+=======
+>>>>>>> 913f9d67398e338873a5361ab14d08250f462e1e:Arduino2560_hung/Arduino2560_hung.ino
     //Update value to server
 //    sendStatusDenTranKh1();
 //    sendStatusDenChumKh1();
@@ -1040,7 +1046,8 @@ void sendStatusATBep()
 
 int readStatusATBep()
 {
-  return digitalRead(PIN_AT_BEP);
+  //return digitalRead(PIN_AT_BEP);
+  return -1;
 }
 /*----------------AT Tong--------------*/
 void changeATTong()
@@ -1070,5 +1077,6 @@ void sendStatusATTong()
 
 int readStatusATTong()
 {
-  return digitalRead(PIN_AT_TONG);
+  //return digitalRead(PIN_AT_TONG);
+  return -1;
 }
