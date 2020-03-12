@@ -27,7 +27,7 @@ SerialCommand sCmd(mySerial); // Khai báo biến sử dụng thư viện Serial
 
 //Cài đặt Socket client
 SocketIOClient client;
-char host[] = "smarthome116.herokuapp.com"; //Địa chỉ IP dịch vụ, hãy thay đổi nó theo địa chỉ IP Socket server của bạn.
+char host[] = "smarthome116.herokuapp.com"; //smarthome116.herokuapp.com, 192.168.1.123
 int port = 80;                        //80,3484                  //Cổng dịch vụ socket server do chúng ta tạo!
 char namespace_esp8266[] = "esp8266"; //Thêm Arduino!
 
