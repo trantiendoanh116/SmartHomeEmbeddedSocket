@@ -97,18 +97,18 @@ void processControl()
   {
     changeDenTranhKh2();
   }
-// 
-//  if (root.containsKey("init"))
-//  {
-//    Serial.println("Init -> get all value of device");
-//    sendStatusDenTranKh2();
-//    sendStatusDenChumKh2();
-//    sendStatusDenTranhKh2();
-//    
-//
-//    sendValueTempHumi();
-//    sendValueCOBep();
-//  }
+ 
+  if (root.containsKey("init"))
+  {
+    Serial.println("Init -> get all value of device");
+    sendStatusDenTranKh2();
+    sendStatusDenChumKh2();
+    sendStatusDenTranhKh2();
+    
+
+    sendValueTempHumi();
+    sendValueCOBep();
+  }
 }
 
 void checkAndUpdateValueDevice()

@@ -8,10 +8,13 @@
 #include <DNSServer.h>
 #include <ESP8266WebServer.h>
 #include "WiFiManager.h"
-//
+
 #include <SoftwareSerial.h>
 #include <SocketIOClient.h>
 #include <SerialCommand.h>
+
+#include <PZEM004Tv30.h>
+#include <ArduinoJson.h>
 
 //include thư viện để kiểm tra free RAM trên con esp8266
 extern "C"
@@ -37,6 +40,9 @@ char namespace_esp8266[] = "esp8266"; //Thêm Arduino!
 // Rfull: Danh sách biến (được đóng gói lại là chuối JSON)
 extern String RID;
 extern String Rfull;
+
+//Khai báo đo dòng điện
+PZEM004Tv30 pzem(12, 11);
 
 //Khi kết nối wifi thất bại
 void configModeCallback(WiFiManager *myWiFiManager)
@@ -97,6 +103,8 @@ void setup()
   sCmd.addDefaultHandler(sendSocketServer); //Lệnh nào đi qua nó cũng bắt hết, rồi chuyển xuống hàm sendSocketServer!
   Serial.println("Da san sang nhan lenh");
 }
+long lastUpdateElectric = 0;
+const long SCHEDULE_GET_VALUE_ELECTRIC = 10000UL;
 
 void loop()
 {
@@ -124,5 +132,54 @@ void loop()
     Serial.println(Rfull);
   }
 
+  if (millis() - lastUpdateElectric > SCHEDULE_GET_VALUE_ELECTRIC)
+  {
+    lastUpdateElectric =  millis();
+    sendValueElectric();
+  }
+
   sCmd.readSerial();
+}
+
+/*------------------Đo giá trị dòng điện-----------------*/
+void sendValueElectric() {
+  float voltage = pzem.voltage();
+  if ( !isnan(voltage) ) {
+    Serial.print("Voltage: "); Serial.print(voltage); Serial.println("V");
+  } else {
+    Serial.println("Error reading voltage");
+    voltage = -1;
+  }
+
+  float current = pzem.current();
+  if ( !isnan(current) ) {
+    Serial.print("Current: "); Serial.print(current); Serial.println("A");
+  } else {
+    Serial.println("Error reading current");
+    current = -1;
+  }
+
+  float energy = pzem.energy();
+  if ( !isnan(energy) ) {
+    Serial.print("Energy: "); Serial.print(energy, 3); Serial.println("kWh");
+  } else {
+    Serial.println("Error reading energy");
+    energy = -1;
+  }
+  Serial.println();
+  StaticJsonBuffer<200> jsonBuffer;
+  JsonObject &root = jsonBuffer.createObject();
+//   root["AMP"] = current;
+//   root["VOL"] = voltage;
+//   root["ENERGY"] = energy;
+   root["AMP"] = random(2, 6);
+   root["VOL"] = random(210, 240);
+   root["ENERGY"] = random(210, 10000);
+   
+   StaticJsonBuffer<200> jsonBuffer1;
+   JsonObject &root1 = jsonBuffer.createObject();
+   String jsonStr;
+   root1["C_S03"] = root;
+   root1.printTo(jsonStr);
+   client.send("DATA", jsonStr);
 }

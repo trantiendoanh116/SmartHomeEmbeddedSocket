@@ -105,6 +105,7 @@ void loop()
   //Chu trình kiểm tra có thiết bị thay đổi trạng thái
   if (millis() - lastUpdatedDevice > SCHEDULE_GET_VALUE_DEVICE)
   {
+    lastUpdatedDevice =  millis();
     checkAndUpdateValueDevice();
   }
   //Chu trình cập nhật dữ liệu của các cảm biến
