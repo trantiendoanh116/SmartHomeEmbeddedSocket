@@ -19,7 +19,7 @@ DHT dht(PIN_TEMP_HUMI, DHTTYPE);
 void setup()
 {
   Serial.begin(115200);
-  mySerial.begin(9600);
+  mySerial.begin(57600);
 
   mySwitch.enableTransmit(10);
 
@@ -72,6 +72,7 @@ void loop()
     lastUpdatedSensor = millis();
     sendValueTempHumi();
     sendValueCOBep();
+    sendValueDustDensity();
   }
 
   sCmd.readSerial();
@@ -108,6 +109,7 @@ void processControl()
 
     sendValueTempHumi();
     sendValueCOBep();
+    sendValueDustDensity();
   }
 }
 
@@ -180,6 +182,13 @@ void sendValueCOBep()
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   root[ID_KHOI_CO] = value;
+  sendData(root);
+}
+void sendValueDustDensity(){
+  float dustDensity = random(0,1000);
+   StaticJsonBuffer<200> jsonBuffer;
+  JsonObject &root = jsonBuffer.createObject();
+  root[ID_DUST_DENSITY] = dustDensity;
   sendData(root);
 }
 

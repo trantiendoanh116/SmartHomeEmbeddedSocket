@@ -85,6 +85,7 @@ const String ID_TEMP_HUMI = "C_S01";
 const String ID_KHOI_CO = "C_S02";
 const String ID_DONGDIEN = "C_S03_POWER";
 const String ID_CONGSUAT_TIEUTHU = "C_S03_ENERGY";
+const String ID_DUST_DENSITY = "C_S04";
 /*------Thông số cài đặt ------*/
 const unsigned long SCHEDULE_GET_VALUE_SENSOR = 20000UL; //Cứ sau 30s thì chu kỳ lặp lại
 const unsigned long SCHEDULE_GET_VALUE_DEVICE = 2000UL;

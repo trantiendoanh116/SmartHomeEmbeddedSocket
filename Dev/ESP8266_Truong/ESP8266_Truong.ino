@@ -3,14 +3,17 @@
 #define LWIP_FEATURES whatever
 #define LWIP_OPEN_SRC whatever
 
-#include <SocketIOClient.h>
-#include <SerialCommand.h>
 //Thư viện Wifi manager
 #include <ESP8266WiFi.h>
 #include <DNSServer.h>
 #include <ESP8266WebServer.h>
 #include "WiFiManager.h"
 
+#include <SoftwareSerial.h>
+#include <SocketIOClient.h>
+#include <SerialCommand.h>
+
+#include <ArduinoJson.h>
 
 //include thư viện để kiểm tra free RAM trên con esp8266
 extern "C"
@@ -22,12 +25,11 @@ const byte RX = 5; // chân GPI05 đấu với chân D4 của Arduino
 const byte TX = 4; // chân GPI04 đấu với chân D5 của Arduino
 
 SoftwareSerial mySerial(RX, TX, false, 256);
-//SoftwareSerial mySerial;
 SerialCommand sCmd(mySerial); // Khai báo biến sử dụng thư viện Serial Command
 
 //Cài đặt Socket client
 SocketIOClient client;
-char host[] = "smarthome116.herokuapp.com"; //smarthome116.herokuapp.com, 192.168.1.123
+char host[] = "smarthome116.herokuapp.com"; //smarthome116.herokuapp.com, 192.168.1.123, smart-home-hung.herokuapp.com
 int port = 80;                        //80,3484                  //Cổng dịch vụ socket server do chúng ta tạo!
 char namespace_esp8266[] = "esp8266"; //Thêm Arduino!
 
@@ -37,6 +39,7 @@ char namespace_esp8266[] = "esp8266"; //Thêm Arduino!
 // Rfull: Danh sách biến (được đóng gói lại là chuối JSON)
 extern String RID;
 extern String Rfull;
+
 
 //Khi kết nối wifi thất bại
 void configModeCallback(WiFiManager *myWiFiManager)
@@ -61,8 +64,8 @@ void sendSocketServer(String command)
 // Cài đặt thông số ban đầu
 void setup()
 {
-  //Serial.begin(115200);
-  mySerial.begin(9600);
+  Serial.begin(115200);
+  mySerial.begin(57600); //Bật software serial để giao tiếp với Arduino, nhớ để baudrate trùng với software serial trên mạch arduino
   delay(10);
 
   //Việc đầu tiên cần làm là kết nối vào mạng Wifi
@@ -97,6 +100,8 @@ void setup()
   sCmd.addDefaultHandler(sendSocketServer); //Lệnh nào đi qua nó cũng bắt hết, rồi chuyển xuống hàm sendSocketServer!
   Serial.println("Da san sang nhan lenh");
 }
+long lastUpdateElectric = 0;
+const long SCHEDULE_GET_VALUE_ELECTRIC = 10000UL;
 
 void loop()
 {
@@ -124,5 +129,30 @@ void loop()
     Serial.println(Rfull);
   }
 
+  if (millis() - lastUpdateElectric > SCHEDULE_GET_VALUE_ELECTRIC)
+  {
+    lastUpdateElectric =  millis();
+    sendValueElectric();
+  }
+
   sCmd.readSerial();
+}
+
+/*------------------Đo giá trị dòng điện-----------------*/
+void sendValueElectric() {
+  StaticJsonBuffer<200> jsonBuffer;
+  JsonObject &root = jsonBuffer.createObject();
+//   root["AMP"] = current;
+//   root["VOL"] = voltage;
+//   root["ENERGY"] = energy;
+   root["AMP"] = random(2, 6);
+   root["VOL"] = random(210, 240);
+   root["ENERGY"] = random(210, 10000);
+   
+   StaticJsonBuffer<200> jsonBuffer1;
+   JsonObject &root1 = jsonBuffer.createObject();
+   String jsonStr;
+   root1["C_S03"] = root;
+   root1.printTo(jsonStr);
+   client.send("DATA", jsonStr);
 }

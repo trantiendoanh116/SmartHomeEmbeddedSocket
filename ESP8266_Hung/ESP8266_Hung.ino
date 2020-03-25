@@ -30,7 +30,7 @@ SerialCommand sCmd(mySerial); // Khai báo biến sử dụng thư viện Serial
 
 //Cài đặt Socket client
 SocketIOClient client;
-char host[] = "smarthome116.herokuapp.com"; //Địa chỉ IP dịch vụ, hãy thay đổi nó theo địa chỉ IP Socket server của bạn.
+char host[] = "smart-home-hung.herokuapp.com"; //smarthome116.herokuapp.com, 192.168.1.123, smart-home-hung.herokuapp.com
 int port = 80;                        //80,3484                  //Cổng dịch vụ socket server do chúng ta tạo!
 char namespace_esp8266[] = "esp8266"; //Thêm Arduino!
 
@@ -42,7 +42,7 @@ extern String RID;
 extern String Rfull;
 
 //Khai báo đo dòng điện
-PZEM004Tv30 pzem(12, 11);
+PZEM004Tv30 pzem(12, 15);
 
 //Khi kết nối wifi thất bại
 void configModeCallback(WiFiManager *myWiFiManager)
@@ -169,12 +169,12 @@ void sendValueElectric() {
   Serial.println();
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-//   root["AMP"] = current;
-//   root["VOL"] = voltage;
-//   root["ENERGY"] = energy;
-   root["AMP"] = random(2, 6);
-   root["VOL"] = random(210, 240);
-   root["ENERGY"] = random(210, 10000);
+   root["AMP"] = current;
+   root["VOL"] = voltage;
+   root["ENERGY"] = energy;
+//   root["AMP"] = random(2, 6);
+//   root["VOL"] = random(210, 240);
+//   root["ENERGY"] = random(210, 10000);
    
    StaticJsonBuffer<200> jsonBuffer1;
    JsonObject &root1 = jsonBuffer.createObject();

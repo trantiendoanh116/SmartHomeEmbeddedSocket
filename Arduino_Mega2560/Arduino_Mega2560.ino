@@ -3,6 +3,7 @@
 #include <SerialCommand.h>
 #include <RCSwitch.h>
 #include <DHT.h>
+#include "SharpGP2Y10.h"
 
 extern "C"
 {
@@ -16,6 +17,8 @@ RCSwitch mySwitch = RCSwitch();
 //Khai báo đo nhiệt độ, độ ẩm
 const int DHTTYPE = DHT22;
 DHT dht(PIN_TEMP_HUMI, DHTTYPE);
+//Khai báo cảm biến bụi
+SharpGP2Y10 dustSensor(A1, 18);
 void setup()
 {
   Serial.begin(115200);
@@ -115,6 +118,8 @@ void loop()
     sendValueTempHumi();
     sendValueCOBep();
   }
+  //Kiểm tran nồng độ khói
+  //  checkDustDensity();
 
   sCmd.readSerial();
   delay(200);
@@ -439,6 +444,14 @@ void sendValueCOBep()
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
   root[ID_KHOI_CO] = value;
+  sendData(root);
+}
+void sendValueDustDensity(){
+  float dustDensity = dustSensor.getDustDensity() * 1000;
+  
+   StaticJsonBuffer<200> jsonBuffer;
+  JsonObject &root = jsonBuffer.createObject();
+  root[ID_DUST_DENSITY] = dustDensity;
   sendData(root);
 }
 

@@ -27,6 +27,7 @@ const String ID_DEN_TRANH_KH2 = "F1_D08";
 
 const String ID_TEMP_HUMI = "C_S01";
 const String ID_KHOI_CO = "C_S02";
+const String ID_DUST_DENSITY = "C_S04";
 /*------Thông số cài đặt ------*/
 const unsigned long SCHEDULE_GET_VALUE_SENSOR = 10000UL; //Cứ sau 30s thì chu kỳ lặp lại
 const unsigned long SCHEDULE_GET_VALUE_DEVICE = 2000UL;
