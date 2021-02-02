@@ -1,6 +1,0 @@
-{
-    "board": "arduino:avr:mega",
-    "port": "COM5",
-    "sketch": "Arduino2560_hung\\Arduino2560_hung.ino",
-    "configuration": "cpu=atmega2560"
-}

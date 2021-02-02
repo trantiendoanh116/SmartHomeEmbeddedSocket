@@ -29,7 +29,7 @@ SerialCommand sCmd(mySerial); // Khai báo biến sử dụng thư viện Serial
 
 //Cài đặt Socket client
 SocketIOClient client;
-char host[] = "smarthome116.herokuapp.com"; //smarthome116.herokuapp.com, 192.168.1.123, smart-home-hung.herokuapp.com
+char host[] = "smarthome116.herokuapp.com"; //smarthome116.herokuapp.com, 192.168.4.100, smart-home-hung.herokuapp.com
 int port = 80;                        //80,3484                  //Cổng dịch vụ socket server do chúng ta tạo!
 char namespace_esp8266[] = "esp8266"; //Thêm Arduino!
 
@@ -81,7 +81,7 @@ void setup()
   {
     Serial.println(F("Ket noi den wifi that bai!"));
     //Nếu kết nối thất bại, thử kết nối lại bằng cách reset thiết bị
-    ESP.reset();
+    //ESP.reset();
     delay(1000);
   }
 
@@ -101,7 +101,7 @@ void setup()
   Serial.println("Da san sang nhan lenh");
 }
 long lastUpdateElectric = 0;
-const long SCHEDULE_GET_VALUE_ELECTRIC = 10000UL;
+const long SCHEDULE_GET_VALUE_ELECTRIC = 60000UL;
 
 void loop()
 {
@@ -142,17 +142,11 @@ void loop()
 void sendValueElectric() {
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-//   root["AMP"] = current;
-//   root["VOL"] = voltage;
-//   root["ENERGY"] = energy;
-   root["AMP"] = random(2, 6);
-   root["VOL"] = random(210, 240);
-   root["ENERGY"] = random(210, 10000);
+   root["amp"] = (double) random(2, 6);
+   root["vol"] = (double) random(50, 500);
+   root["energy"] = (int) random(20, 1000);
+   String data;
+   root.printTo(data);
    
-   StaticJsonBuffer<200> jsonBuffer1;
-   JsonObject &root1 = jsonBuffer.createObject();
-   String jsonStr;
-   root1["C_S03"] = root;
-   root1.printTo(jsonStr);
-   client.send("DATA", jsonStr);
+   client.send("F1_S03", data);
 }

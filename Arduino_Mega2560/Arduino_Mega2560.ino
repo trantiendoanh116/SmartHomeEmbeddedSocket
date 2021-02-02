@@ -117,6 +117,7 @@ void loop()
     lastUpdatedSensor = millis();
     sendValueTempHumi();
     sendValueCOBep();
+    sendValueDustDensity();
   }
   //Kiểm tran nồng độ khói
   //  checkDustDensity();
@@ -183,11 +184,11 @@ void processControl()
   {
     changeDenCuaNgach();
   }
-  if (root.containsKey(ID_BEP_1))
+  if (root.containsKey(ID_DEN_1_BEP))
   {
     changeDenBep1();
   }
-  if (root.containsKey(ID_BEP_2))
+  if (root.containsKey(ID_DEN_2_BEP))
   {
     changeDenBep2();
   }
@@ -227,6 +228,7 @@ void processControl()
 
     sendValueTempHumi();
     sendValueCOBep();
+    sendValueDustDensity();
   }
 }
 
@@ -322,15 +324,15 @@ void checkAndUpdateValueDevice()
     sendStatusATTong();
   }
 }
-void sendData(JsonObject &data)
+void sendData(String deviceId, JsonObject &data)
 {
-  mySerial.print("DATA");
+  mySerial.print(deviceId);
   mySerial.print('\r');
   data.printTo(mySerial);
   mySerial.print('\r');
   //Debug
   Serial.print("Send to server: ");
-  Serial.print("DATA");
+  Serial.print(deviceId);
   Serial.print('\r');
   data.printTo(Serial);
   Serial.print('\n');
@@ -426,33 +428,26 @@ void sendValueTempHumi()
 {
   float h = dht.readHumidity();    //Đọc độ ẩm
   float t = dht.readTemperature(); //Đọc nhiệt độ
-  //float h = random(60, 80);
-  //loat t = random(25, 35);
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root["TEMP"] = t;
-  root["HUMI"] = h;
-
-  StaticJsonBuffer<200> jsonBuffer1;
-  JsonObject &root1 = jsonBuffer1.createObject();
-  root1[ID_TEMP_HUMI] = root;
-  sendData(root1);
+  root[KEY_TEMP] = t;
+  root[KEY_HUMI] = h;
+  sendData(ID_SENSOR_TEMP_HUMI, root);
 }
 void sendValueCOBep()
 {
   int value = analogRead(A3);
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_KHOI_CO] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_SENSOR_CO, root);
 }
 void sendValueDustDensity(){
   float dustDensity = dustSensor.getDustDensity() * 1000;
-  
-   StaticJsonBuffer<200> jsonBuffer;
+  StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_DUST_DENSITY] = dustDensity;
-  sendData(root);
+  root[KEY_VALUE] = dustDensity;
+  sendData(ID_SENSOR_DUST, root);
 }
 
 /*----------------DenTranKH1--------------*/
@@ -470,8 +465,8 @@ void sendStatusDenTranKh1()
   vDenTranKh1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_DEN_TRAN_KH1] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_DEN_TRAN_KH1, root);
 }
 
 int readStatusDenTranKh1()
@@ -496,8 +491,8 @@ void sendStatusDenChumKh1()
   vDenChumKh1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_DEN_CHUM_KH1] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_DEN_CHUM_KH1, root);
 }
 
 int readStatusDenChumKh1()
@@ -523,8 +518,8 @@ void sendStatusDenTranhKh1()
   vDenTranhKh1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_DEN_TRANH_KH1] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_DEN_TRANH_KH1, root);
 }
 
 int readStatusDenTranhKh1()
@@ -570,13 +565,14 @@ void sendStatusQuat()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 1 || value == 0 || value == 2 || value == 3)
   {
-    root[ID_QUAT_TRAN] = value;
+    root[KEY_VALUE] = value;
   }
   else
   {
-    root[ID_QUAT_TRAN] = -1;
+    root[KEY_VALUE] = -1;
   }
-  sendData(root);
+  sendData(ID_QUAT_TRAN, root);
+
 }
 
 int readStatusQuat()
@@ -616,8 +612,9 @@ void sendStatusDenTrangTriKh1()
   vDenTrangTriKh1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_DEN_TRANGTRI_KH1] = value;
-  sendData(root);
+  
+  root[KEY_VALUE] = value;
+  sendData(ID_DEN_TRANGTRI_KH1, root);
 }
 
 int readStatusDenTrangTriKh1()
@@ -642,8 +639,8 @@ void sendStatusDenTranKh2()
   vDenTranKh2 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_DEN_TRAN_KH2] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_DEN_TRAN_KH2, root);
 }
 
 int readStatusDenTranKh2()
@@ -668,8 +665,9 @@ void sendStatusDenChumKh2()
   vDenChumKh2 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_DEN_CHUM_KH2] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_DEN_CHUM_KH2, root);
+
 }
 
 int readStatusDenChumKh2()
@@ -694,8 +692,9 @@ void sendStatusDenTranhKh2()
   vDenTranhKh2 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_DEN_TRANH_KH2] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_DEN_TRANH_KH2, root);
+ 
 }
 
 int readStatusDenTranhKh2()
@@ -720,8 +719,8 @@ void sendStatusDenSan()
   vDenSan = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_DEN_SAN] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_DEN_SAN, root);
 }
 
 int readStatusDenSan()
@@ -746,8 +745,9 @@ void sendStatusDenCong()
   vDenCong = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_DEN_CONG] = value;
-  sendData(root);
+   root[KEY_VALUE] = value;
+  sendData(ID_DEN_CONG, root);
+
 }
 
 int readStatusDenCong()
@@ -772,8 +772,8 @@ void sendStatusDenWC()
   vDenWC = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_DEN_WC] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_DEN_WC, root);
 }
 
 int readStatusDenWC()
@@ -799,8 +799,9 @@ void sendStatusBinhNL()
   vBinhNL = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_BINH_NL] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_BINH_NL, root);
+ 
 }
 
 int readStatusBinhNL()
@@ -825,8 +826,10 @@ void sendStatusDenCuaNgach()
   vDenCuaNgach = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_DEN_CUA_NGACH] = value;
-  sendData(root);
+
+  root[KEY_VALUE] = value;
+  sendData(ID_DEN_CUA_NGACH, root);
+
 }
 
 int readStatusCuaNgach()
@@ -851,8 +854,8 @@ void sendStatusDenBep1()
   vDenBep1 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_BEP_1] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_DEN_1_BEP, root);
 }
 
 int readStatusBep1()
@@ -877,8 +880,8 @@ void sendStatusDenBep2()
   vDenBep2 = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_BEP_2] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_DEN_2_BEP, root);
 }
 
 int readStatusBep2()
@@ -927,13 +930,15 @@ void sendStatusKhiLoc()
   JsonObject &root = jsonBuffer.createObject();
   if (value == 0 || value == 1 || value == 2 || value == 3)
   {
-    root[ID_KHI_LOC] = value;
+    root[KEY_VALUE] = value;
   }
   else
   {
-    root[ID_KHI_LOC] = -1;
+    root[KEY_VALUE] = -1;
   }
-  sendData(root);
+
+  root[KEY_VALUE] = value;
+  sendData(ID_KHI_LOC, root);
 }
 
 int readStatusKhiLoc()
@@ -974,8 +979,8 @@ void sendStatusATBep()
   vATBep = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_AT_BEP] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_AT_BEP, root);
 }
 
 int readStatusATBep()
@@ -1000,8 +1005,9 @@ void sendStatusATTong()
   vATTong = value;
   StaticJsonBuffer<200> jsonBuffer;
   JsonObject &root = jsonBuffer.createObject();
-  root[ID_AT_TONG] = value;
-  sendData(root);
+  root[KEY_VALUE] = value;
+  sendData(ID_AT_TONG, root);
+
 }
 
 int readStatusATTong()

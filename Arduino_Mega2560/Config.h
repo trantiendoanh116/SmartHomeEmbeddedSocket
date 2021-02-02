@@ -10,8 +10,8 @@ const long ADD_CN6 = 0b0101000101010101;
 const long ADD_CN7 = 0b0100010101010101;
 const long ADD_CN8 = 0b0001010101010101;
 const long ADD_CN9 = 0b0101010101010000;
-const long ADD_CN10 = 0b0101010101000001;
-const long ADD_CN11 = 0b0101010100000101;
+const long ADD_CN10 = 0b0101010100000101;
+const long ADD_CN11 = 0b0101010101000001;
 const long ADD_CN12 = 0b0101010000010101;
 /*--------Giá trị bit của các nút điều khiển(19)------*/
 const int VALUE_DEN_TRAN_KH1 = 0b00000011;
@@ -36,9 +36,9 @@ const int VALUE_AT_BEP = 0b00110000;
 const int VALUE_AT_TONG = 0b00110000;
 const int VALUE_RESET_CN = 0b11000000;
 /*--------Giá trị Pin để lấy giá trị/trang thái -------*/
-const int PIN_DEN_TRAN_KH1 = 44;
-const int PIN_DEN_CHUM_KH1 = 46;
-const int PIN_DEN_TRANH_KH1 = 45;
+const int PIN_DEN_TRAN_KH1 = 35;
+const int PIN_DEN_CHUM_KH1 = 36;
+const int PIN_DEN_TRANH_KH1 = 37;
 const int PIN_QUAT_TRAN_1 = 32;
 const int PIN_QUAT_TRAN_2 = 33;
 const int PIN_QUAT_TRAN_3 = 34;
@@ -53,15 +53,14 @@ const int PIN_BINH_NL = 40;
 const int PIN_DEN_CUA_NGACH = 43;
 const int PIN_DEN_BEP_1 = 24;
 const int PIN_DEN_BEP_2 = 25;
-const int PIN_KHI_LOC_1 = 35;
-const int PIN_KHI_LOC_2 =36;
-const int PIN_KHI_LOC_3 =37;
+const int PIN_KHI_LOC_1 = 49;
+const int PIN_KHI_LOC_2 =48;
+const int PIN_KHI_LOC_3 =47;
 const int PIN_AT_BEP = 23;
 const int PIN_AT_TONG = 22;
 const int PIN_TEMP_HUMI = 2;
-//const String PIN_KHOI_CO = A3;
-const int PIN_DONGDIEN_TX = 11;
-const int PIN_DONGDIEN_RX = 12;
+const int PIN_TX_SENSOR_CO_ID = 6;
+const int PIN_RX_SENSOR_CO = 7;
 /*--------Định nghĩa ID cho các thiết bị -------*/
 const String ID_DEN_TRAN_KH1 = "F1_D01";
 const String ID_DEN_CHUM_KH1 = "F1_D02";
@@ -76,16 +75,29 @@ const String ID_DEN_CONG = "F1_D10";
 const String ID_DEN_WC = "F1_D11";
 const String ID_BINH_NL = "F1_D12";
 const String ID_DEN_CUA_NGACH = "F1_D13";
-const String ID_BEP_1 = "F1_D14";
-const String ID_BEP_2 = "F1_D15";
+const String ID_DEN_1_BEP = "F1_D14";
+const String ID_DEN_2_BEP = "F1_D15";
 const String ID_KHI_LOC = "F1_D16";
-const String ID_AT_BEP = "C_D01";
-const String ID_AT_TONG = "C_D02";
-const String ID_TEMP_HUMI = "C_S01";
-const String ID_KHOI_CO = "C_S02";
-const String ID_DONGDIEN = "C_S03_POWER";
-const String ID_CONGSUAT_TIEUTHU = "C_S03_ENERGY";
-const String ID_DUST_DENSITY = "C_S04";
+const String ID_AT_BEP = "F1_D17";
+const String ID_AT_TONG = "F1_D18";
+const String ID_GARA = "F1_D19";
+
+const String ID_SENSOR_TEMP_HUMI = "F1_S01";
+const String ID_SENSOR_CO = "F1_S02";
+const String ID_SENSOR_ELECTRIC = "F1_S03";
+const String ID_SENSOR_DUST = "F1_S04";
+
+/*------Key trong json ------*/
+const String KEY_TEMP = "temp";
+const String KEY_HUMI = "humi";
+const String KEY_AMPE = "amp";
+const String KEY_VOLTAGE = "vol";
+const String KEY_ENERGY = "energy";
+const String KEY_VALUE = "value";
+const String KEY_AUTO = "auto";
+
 /*------Thông số cài đặt ------*/
 const unsigned long SCHEDULE_GET_VALUE_SENSOR = 20000UL; //Cứ sau 30s thì chu kỳ lặp lại
 const unsigned long SCHEDULE_GET_VALUE_DEVICE = 2000UL;
+const unsigned long INTERVAL_DUST_DENSITY = 2000UL;         //30s
+const unsigned long INTERVAL_DUST_DENSITY_WARNING = 5000UL; //10s

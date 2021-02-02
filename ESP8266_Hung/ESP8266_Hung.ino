@@ -176,10 +176,7 @@ void sendValueElectric() {
 //   root["VOL"] = random(210, 240);
 //   root["ENERGY"] = random(210, 10000);
    
-   StaticJsonBuffer<200> jsonBuffer1;
-   JsonObject &root1 = jsonBuffer.createObject();
-   String jsonStr;
-   root1["C_S03"] = root;
-   root1.printTo(jsonStr);
-   client.send("DATA", jsonStr);
+   String data;
+   root.printTo(data);
+   client.send("F1_S03", data);
 }
